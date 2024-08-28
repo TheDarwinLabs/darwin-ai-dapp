@@ -1,0 +1,20 @@
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_8001_339799)">
+<g opacity="0.85">
+<ellipse cx="10.3942" cy="10.3942" rx="3" ry="0.7" transform="rotate(-45 10.3942 10.3942)" stroke="#FF971F"/>
+<ellipse cx="10.3942" cy="10.3942" rx="3" ry="0.7" transform="rotate(-45 10.3942 10.3942)" stroke="black" stroke-opacity="0.15" style="mix-blend-mode:overlay"/>
+<ellipse cx="8.76779" cy="8.76728" rx="5" ry="1" transform="rotate(-45 8.76779 8.76728)" stroke="#FF971F"/>
+<ellipse cx="8.76779" cy="8.76728" rx="5" ry="1" transform="rotate(-45 8.76779 8.76728)" stroke="black" stroke-opacity="0.1" style="mix-blend-mode:overlay"/>
+<ellipse cx="6.99996" cy="6.99966" rx="6" ry="1.5" transform="rotate(-45 6.99996 6.99966)" stroke="#FF971F"/>
+<ellipse cx="6.99996" cy="6.99966" rx="6" ry="1.5" transform="rotate(-45 6.99996 6.99966)" stroke="black" stroke-opacity="0.05" style="mix-blend-mode:overlay"/>
+<ellipse cx="5.23226" cy="5.23212" rx="5" ry="1" transform="rotate(-45 5.23226 5.23212)" stroke="#FF971F"/>
+<ellipse cx="3.60592" cy="3.60608" rx="3" ry="0.7" transform="rotate(-45 3.60592 3.60608)" stroke="#FF971F"/>
+<ellipse cx="3.60592" cy="3.60608" rx="3" ry="0.7" transform="rotate(-45 3.60592 3.60608)" stroke="white" stroke-opacity="0.1" style="mix-blend-mode:soft-light"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_8001_339799">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+</defs>
+</svg>
