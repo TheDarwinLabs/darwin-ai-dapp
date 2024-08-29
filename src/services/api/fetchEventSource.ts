@@ -2,8 +2,7 @@ import {
   EventSourceMessage,
   fetchEventSource,
 } from "@microsoft/fetch-event-source";
-// import { API_BASE_URL } from "@/lib/config";
-const API_BASE_URL = "";
+import { API_BASE_URL } from "@/lib/config";
 
 export async function fetchEventSourceWrapper(
   endpoint: string = "chat",

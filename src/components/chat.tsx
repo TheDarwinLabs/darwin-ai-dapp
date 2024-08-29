@@ -18,6 +18,8 @@ import {
   signTypedData,
 } from "@metamask/eth-sig-util";
 import { bufferToHex, toBuffer } from "ethereumjs-util";
+import { fetchEventSourceWrapper } from "@/services/api/fetchEventSource";
+import { Loader2 } from "lucide-react";
 
 const EIP712DomainType = [
   { name: "name", type: "string" },
@@ -40,11 +42,35 @@ const ForwardRequestType = [
 const GENERIC_PARAMS =
   "address from,address approval,address to,uint256 value,uint256 nonce,bytes data,uint256 validUntilTime";
 
+export type Message = {
+  id: string;
+  request: string;
+  response: string;
+  loading?: boolean;
+};
+
+type MessageResponse = {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Array<{
+    index: number;
+    delta: {
+      role: string;
+      content?: string;
+    };
+    finish_reason: string | null;
+  }>;
+  usage?: any;
+};
+
 export const Chat = () => {
   const { address, isConnected } = useAccount();
   const { data: hash, writeContractAsync } = useWriteContract();
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
-
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const wallet = getOrCreateWallet();
     setWalletInfo(wallet);
@@ -81,8 +107,18 @@ export const Chat = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      // handleSendMessage();
+      handleSendMessage();
     }
+  };
+
+  const scrollToBottom = () => {
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 50);
+    return () => clearTimeout(timer);
   };
 
   const handleSendMessage = async () => {
@@ -90,16 +126,21 @@ export const Chat = () => {
       console.error("Please connect your wallet first.");
       return;
     }
-    if ((allowance ?? 0) < 10000000) {
+    if (!input.trim()) return;
+    if ((allowance ?? 0) < 10) {
       await writeContractAsync({
         address: DNAStakeContract,
         abi: DNAStakeAbi,
         functionName: "approve",
-        args: [walletInfo?.address ?? "0x", ethers.parseEther("1")],
+        args: [walletInfo?.address ?? "0x", ethers.parseEther("100")],
       });
     }
 
-    const query = "hello";
+    const query = input;
+    setInput("");
+    setTimeout(() => {
+      handleInput();
+    }, 0);
     const typeName: string = `ForwardRequest(${GENERIC_PARAMS})`;
     const typeHash: string = ethers.keccak256(ethers.toUtf8Bytes(typeName));
     const queryHash = ethers.keccak256(ethers.toUtf8Bytes(query));
@@ -166,21 +207,82 @@ export const Chat = () => {
       data: func,
     };
 
-    // await request.post("http://localhost:8002/chat", chatBody);
-
-    // if (!input.trim()) return;
-    // // createMessage(input);
-    // setInput("");
-    // setTimeout(() => {
-    //   handleInput();
-    // }, 0);
+    let mid = "temp";
+    const newMessage = {
+      id: mid,
+      request: query,
+      response: "",
+    };
+    setMessages((prevMessages) => {
+      return [...(prevMessages ?? []), newMessage];
+    });
+    setLoading(true);
+    scrollToBottom();
+    fetchEventSourceWrapper(`chat`, {
+      body: chatBody,
+      onmessage: (ev: any) => {
+        try {
+          const { id, choices } = JSON.parse(ev.data) as MessageResponse;
+          mid = id;
+          if (!!choices?.length) {
+            const { delta, finish_reason } = choices[0];
+            console.log(choices[0]);
+            if (finish_reason == "stop") {
+              // stop
+              setLoading(false);
+            } else if (delta.content) {
+              setMessages((prevMessages) => {
+                if (prevMessages?.length) {
+                  const index = prevMessages.findIndex(
+                    (message) => message.id === mid
+                  );
+                  const updatedMessages = [...prevMessages];
+                  updatedMessages[index] = {
+                    ...updatedMessages[index],
+                    response:
+                      (updatedMessages[index]?.response ?? "") + delta.content,
+                  };
+                  return updatedMessages;
+                }
+                return prevMessages;
+              });
+            } else if (delta.role) {
+              setMessages((prevMessages) => {
+                if (prevMessages?.length) {
+                  const index = prevMessages.findIndex(
+                    (message) => message.id === "temp"
+                  );
+                  const updatedMessages = [...prevMessages];
+                  updatedMessages[index] = {
+                    ...updatedMessages[index],
+                    id: mid,
+                  };
+                  return updatedMessages;
+                }
+                return prevMessages;
+              });
+            }
+          }
+          scrollToBottom();
+        } catch (error) {
+          console.log(ev);
+          if (ev.data == "[DONE]") {
+            setLoading(false);
+          }
+        }
+      },
+      onerror: (err: any) => {
+        console.log(err);
+        setLoading(false);
+      },
+    });
   };
 
   const msg = "Remove an element from an array in Swift";
 
   return (
-    <div className=" flex flex-col flex-1 overflow-y-auto">
-      <div className="grow flex flex-col items-start overflow-y-auto px-[120px] pt-[62px] ">
+    <>
+      <div className="grow px-[120px] pt-[62px] ">
         <div className="px-[50px] pt-[50px] pb-10 bg-[#0B080D] rounded-md">
           <div className="flex items-center gap-[10px] mb-6">
             <div className="bg-[rgba(0,0,0,0.2)] w-[46px] h-[46px] border rounded-md"></div>
@@ -211,17 +313,31 @@ export const Chat = () => {
             <span className="text-[rgba(255,151,31,0.8)]">QDNA * 100</span>
           </div>
         </div>
-        <div className="mt-10 self-end inline-block bg-[rgba(99,73,255,0.1)] py-6 px-[30px] rounded-md text-[18px] leading-6 text-primary-700">
-          <Markdown>{msg}</Markdown>
-        </div>
-        <div className="mt-10 items-end inline-block bg-[rgba(99,73,255,0.1)] py-6 px-[30px] rounded-md text-[18px] leading-6 text-primary-700">
-          <Markdown>{msg}</Markdown>
-        </div>
-        <div className="mt-10 items-end inline-block bg-[rgba(99,73,255,0.1)] py-6 px-[30px] rounded-md text-[18px] leading-6 text-primary-700">
-          <Markdown>{msg}</Markdown>
-        </div>
+        {messages?.map((msg) => {
+          return (
+            <div key={msg.id} className="flex flex-col items-start">
+              <div className="mt-10 max-w-[90%] self-end inline-block bg-[rgba(99,73,255,0.1)] py-6 px-[30px] rounded-md text-[18px] leading-6 text-primary-700">
+                <Markdown>{msg.request}</Markdown>
+              </div>
+              <div className="inline-flex flex-col gap-[10px] mt-10 max-w-[90%]  py-6 px-[30px] rounded-md text-[18px] leading-6 text-[#F2F2F2] text-sm ">
+                <div className="flex gap-[10px] items-center">
+                  <div className="bg-[#6054AA] w-6 h-6 rounded-full"></div>
+                  <span className="text-base">Llama 3.1</span>
+                </div>
+                <Markdown className="bg-[#0B080D] py-6 px-[30px]">
+                  {msg.response}
+                </Markdown>
+                <div className="flex items-center flex-wrap gap-1 text-[#989898]">
+                  <SvgIcon name="qdna" />
+                  QDNA <span>-3.5</span> ∙ QDNA <span>hash 0x580...5f34</span> ∙
+                  <span className="text-brand cursor-pointer">RETRY</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <div className="bg-[rgba(0,0,0,0.9)] py-[60px] px-[120px]">
+      <div className=" sticky bottom-0 bg-[rgba(0,0,0,0.99)] py-[60px] px-[120px]">
         <div
           className={cn(
             "border-[2px] rounded-md flex p-[10px] border-[#2C2C2D] gap-[10px] focus-within:border-[2px] focus-within:border-[#2C2172] group",
@@ -248,14 +364,17 @@ export const Chat = () => {
           <Button
             className=" h-[60px] w-[147px] uppercase text-brand bg-[rgba(255,255,255,0.1)] text-[18px] font-bold group-focus:bg-blue-500 focus-within:bg-[rgba(99,73,255,0.3)]"
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
               e.stopPropagation();
               handleSendMessage();
             }}
+            disabled={loading}
           >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             submit
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };

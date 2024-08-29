@@ -11,7 +11,7 @@ export const SideBar = () => {
   const { address } = useAccount();
 
   return (
-    <div className="flex flex-col w-[310px] bg-[#0B080D] ">
+    <div className="fixed left-0 top-0 h-[100vh] flex flex-col w-[310px] bg-[#0B080D] ">
       <div className="grow">
         <div className="px-6 py-9 border-b-[1px] border-[#2C2C2D]">
           <SvgIcon name="logo" className="w-[262px] h-[28px]" />
