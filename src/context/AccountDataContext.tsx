@@ -15,8 +15,10 @@ interface AccountDataContextProps {
   stakedDNA: string | null;
   preQDNA: string | null;
   qdnaUpdatedAt: number | null;
+  showQDNAerror: boolean;
   formatBalance: (precision?: number) => string;
   refetchUserStakeInfo: () => void;
+  setOpenQDNAerror: (value: boolean) => void;
 }
 
 const AccountDataContext = createContext<AccountDataContextProps | undefined>(
@@ -48,6 +50,7 @@ export const AccountDataProvider = ({
   const [stakedDNA, setStakedDNA] = useState<string | null>(null);
   const [preQDNA, setPreQDNA] = useState<string | null>(null);
   const [qdnaUpdatedAt, setQdnaUpdatedAt] = useState<number | null>(null);
+  const [showQDNAerror, setShowQDNAerror] = useState<boolean>(false);
 
   useEffect(() => {
     if (balanceInfo) setBalance(balanceInfo.formatted);
@@ -68,6 +71,8 @@ export const AccountDataProvider = ({
       .toString();
   };
 
+  const setOpenQDNAerror = (value: boolean) => setShowQDNAerror(value);
+
   return (
     <AccountDataContext.Provider
       value={{
@@ -75,6 +80,8 @@ export const AccountDataProvider = ({
         stakedDNA,
         preQDNA,
         qdnaUpdatedAt,
+        showQDNAerror,
+        setOpenQDNAerror,
         formatBalance,
         refetchUserStakeInfo,
         // amount, userId, refetchAccountData

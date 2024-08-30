@@ -20,6 +20,9 @@ import {
 import { bufferToHex, toBuffer } from "ethereumjs-util";
 import { fetchEventSourceWrapper } from "@/services/api/fetchEventSource";
 import { Loader2 } from "lucide-react";
+import LoadingDots from "./LoadingDots";
+import { fetcher } from "@/services/api/fetcher";
+import { useAccountData } from "@/context/AccountDataContext";
 
 const EIP712DomainType = [
   { name: "name", type: "string" },
@@ -67,10 +70,12 @@ type MessageResponse = {
 
 export const Chat = () => {
   const { address, isConnected } = useAccount();
+  const { setOpenQDNAerror } = useAccountData();
   const { data: hash, writeContractAsync } = useWriteContract();
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   useEffect(() => {
     const wallet = getOrCreateWallet();
     setWalletInfo(wallet);
@@ -121,22 +126,34 @@ export const Chat = () => {
     return () => clearTimeout(timer);
   };
 
-  const handleSendMessage = async () => {
+  const getSignnonce = async () => {
+    const response = await fetcher(`account/signnonce`, {
+      method: "GET",
+    });
+    console.log(response);
+  };
+
+  const genMessage = async (msgText: string = input) => {
     if (!isConnected || !address) {
       console.error("Please connect your wallet first.");
       return;
     }
-    if (!input.trim()) return;
-    if ((allowance ?? 0) < 10) {
-      await writeContractAsync({
-        address: DNAStakeContract,
-        abi: DNAStakeAbi,
-        functionName: "approve",
-        args: [walletInfo?.address ?? "0x", ethers.parseEther("100")],
-      });
+    if (!msgText.trim()) return;
+    setLoading(true);
+    if ((allowance ?? 0) < 10000) {
+      try {
+        await writeContractAsync({
+          address: DNAStakeContract,
+          abi: DNAStakeAbi,
+          functionName: "approve",
+          args: [walletInfo?.address ?? "0x", ethers.parseEther("999999999")],
+        });
+      } catch (error) {
+        setLoading(false);
+      }
     }
 
-    const query = input;
+    const query = msgText;
     setInput("");
     setTimeout(() => {
       handleInput();
@@ -207,16 +224,26 @@ export const Chat = () => {
       data: func,
     };
 
+    return chatBody;
+  };
+
+  const handleSendMessage = async () => {
+    const chatBody = await genMessage();
+    if (!chatBody) {
+      setLoading(false);
+      return;
+    }
     let mid = "temp";
     const newMessage = {
       id: mid,
-      request: query,
+      request: chatBody.query,
       response: "",
+      loading: true,
     };
     setMessages((prevMessages) => {
       return [...(prevMessages ?? []), newMessage];
     });
-    setLoading(true);
+
     scrollToBottom();
     fetchEventSourceWrapper(`chat`, {
       body: chatBody,
@@ -268,6 +295,20 @@ export const Chat = () => {
           console.log(ev);
           if (ev.data == "[DONE]") {
             setLoading(false);
+            setMessages((prevMessages) => {
+              if (prevMessages?.length) {
+                const index = prevMessages.findIndex(
+                  (message) => message.id === mid
+                );
+                const updatedMessages = [...prevMessages];
+                updatedMessages[index] = {
+                  ...updatedMessages[index],
+                  loading: false,
+                };
+                return updatedMessages;
+              }
+              return prevMessages;
+            });
           }
         }
       },
@@ -278,7 +319,102 @@ export const Chat = () => {
     });
   };
 
-  const msg = "Remove an element from an array in Swift";
+  const handleRetry = async (msg: Message) => {
+    const chatBody = await genMessage(msg.request);
+    if (!chatBody) {
+      setLoading(false);
+      return;
+    }
+    let mid = msg.id;
+    setMessages((prevMessages) => {
+      if (prevMessages?.length) {
+        const index = prevMessages.findIndex(
+          (message) => message.id === msg.id
+        );
+        const updatedMessages = [...prevMessages];
+        updatedMessages[index] = {
+          ...updatedMessages[index],
+          response: "",
+          loading: true,
+        };
+        return updatedMessages;
+      }
+      return prevMessages;
+    });
+    scrollToBottom();
+    fetchEventSourceWrapper(`chat`, {
+      body: chatBody,
+      onmessage: (ev: any) => {
+        try {
+          const { id, choices } = JSON.parse(ev.data) as MessageResponse;
+          mid = id;
+          if (!!choices?.length) {
+            const { delta, finish_reason } = choices[0];
+            console.log(choices[0]);
+            if (finish_reason == "stop") {
+              // stop
+              setLoading(false);
+            } else if (delta.content) {
+              setMessages((prevMessages) => {
+                if (prevMessages?.length) {
+                  const index = prevMessages.findIndex(
+                    (message) => message.id === mid
+                  );
+                  const updatedMessages = [...prevMessages];
+                  updatedMessages[index] = {
+                    ...updatedMessages[index],
+                    response:
+                      (updatedMessages[index]?.response ?? "") + delta.content,
+                  };
+                  return updatedMessages;
+                }
+                return prevMessages;
+              });
+            } else if (delta.role) {
+              setMessages((prevMessages) => {
+                if (prevMessages?.length) {
+                  const index = prevMessages.findIndex(
+                    (message) => message.id === msg.id
+                  );
+                  const updatedMessages = [...prevMessages];
+                  updatedMessages[index] = {
+                    ...updatedMessages[index],
+                    id: mid,
+                  };
+                  return updatedMessages;
+                }
+                return prevMessages;
+              });
+            }
+          }
+          scrollToBottom();
+        } catch (error) {
+          console.log(ev);
+          if (ev.data == "[DONE]") {
+            setLoading(false);
+            setMessages((prevMessages) => {
+              if (prevMessages?.length) {
+                const index = prevMessages.findIndex(
+                  (message) => message.id === mid
+                );
+                const updatedMessages = [...prevMessages];
+                updatedMessages[index] = {
+                  ...updatedMessages[index],
+                  loading: false,
+                };
+                return updatedMessages;
+              }
+              return prevMessages;
+            });
+          }
+        }
+      },
+      onerror: (err: any) => {
+        console.log(err);
+        setLoading(false);
+      },
+    });
+  };
 
   return (
     <>
@@ -324,14 +460,26 @@ export const Chat = () => {
                   <div className="bg-[#6054AA] w-6 h-6 rounded-full"></div>
                   <span className="text-base">Llama 3.1</span>
                 </div>
-                <Markdown className="bg-[#0B080D] py-6 px-[30px]">
-                  {msg.response}
-                </Markdown>
-                <div className="flex items-center flex-wrap gap-1 text-[#989898]">
-                  <SvgIcon name="qdna" />
-                  QDNA <span>-3.5</span> ∙ QDNA <span>hash 0x580...5f34</span> ∙
-                  <span className="text-brand cursor-pointer">RETRY</span>
+                <div className="bg-[#0B080D] py-6 px-[30px]">
+                  {msg.response ? (
+                    <Markdown className="">{msg.response}</Markdown>
+                  ) : (
+                    <LoadingDots />
+                  )}
                 </div>
+                {!msg.loading && (
+                  <div className="flex items-center flex-wrap gap-1 text-[#989898]">
+                    <SvgIcon name="qdna" />
+                    QDNA <span>-3.5</span> ∙ QDNA <span>hash 0x580...5f34</span>{" "}
+                    ∙
+                    <span
+                      className="text-brand cursor-pointer"
+                      onClick={() => handleRetry(msg)}
+                    >
+                      RETRY
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -349,6 +497,8 @@ export const Chat = () => {
             ref={textareaRef}
             rows={1}
             value={input}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             onInput={handleInput}
             onKeyDown={handleKeyDown}
             onChange={(e) => setInput(e.target.value)}
@@ -362,7 +512,10 @@ export const Chat = () => {
             }}
           />
           <Button
-            className=" h-[60px] w-[147px] uppercase text-brand bg-[rgba(255,255,255,0.1)] text-[18px] font-bold group-focus:bg-blue-500 focus-within:bg-[rgba(99,73,255,0.3)]"
+            className={cn(
+              "h-[60px] w-[147px] uppercase  bg-[rgba(255,255,255,0.1)] text-[18px] font-bold focus:text-brand focus:bg-[rgba(99,73,255,0.3)]",
+              isFocused ? "text-brand bg-[rgba(99,73,255,0.3)]" : ""
+            )}
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault();
               e.stopPropagation();

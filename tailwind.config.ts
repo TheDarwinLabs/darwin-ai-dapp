@@ -71,10 +71,20 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "color-change": {
+          "0%, 100%": { backgroundColor: "#ffffff" }, // 白色
+          "50%": { backgroundColor: "#6b7280" }, // 灰色
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "color-change": "color-change 1.2s infinite",
+      },
+      transitionDelay: {
+        "0": "0ms",
+        "200": "200ms",
+        "400": "400ms",
       },
       backgroundImage: {
         stake:

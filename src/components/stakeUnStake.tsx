@@ -38,7 +38,13 @@ export const StakeUnStake = () => {
 
 const Stake = () => {
   const { toast } = useToast();
-  const { preQDNA, formatBalance, refetchUserStakeInfo } = useAccountData();
+  const {
+    preQDNA,
+    formatBalance,
+    refetchUserStakeInfo,
+    showQDNAerror,
+    setOpenQDNAerror,
+  } = useAccountData();
   const { data: multiplier = 0 } = useReadMultiplier();
   const { data: qDNAPerBlockWithOneStake } = useReadqDNAPerBlockWithOneStake();
   const qDNAPerHourWithOneStake = (
@@ -127,101 +133,142 @@ const Stake = () => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="flex-1 rounded-[6px] uppercase bg-[rgba(255,255,255,0.05)] text-[18px] w-full text-brand h-[48px] select-none">
-          stask
-        </Button>
-      </DialogTrigger>
-      <DialogContent
-        className="bg-[#0B080D] p-[30px] border-none rounded-[6px] gap-[20px]"
-        hideCloseButton
-      >
-        <DialogHeader>
-          <DialogTitle className="text-[#E2E2E2] text-[36px] font-bold uppercase">
-            stake
-          </DialogTitle>
-        </DialogHeader>
-        <div>
-          <div className="bg-stake bg-black p-5">
-            <div className="flex justify-between text-xs">
-              <span className="text-[rgba(255,255,255,0.3)]">You deposit</span>
-              <div className="text-brand flex items-center gap-1">
-                <SvgIcon name="dna" />
-                <span>DNA</span>
-              </div>
-            </div>
-            <Input
-              className="bg-transparent p-0 pt-5 pb-[6px] border-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-brand font-bold h-auto text-[36px] leading-9 dna-selection"
-              value={deposit}
-              maxLength={15}
-              onChange={handleDepositChange}
-              placeholder="0"
-            />
-            <div className="text-xs text-[rgba(255,255,255,0.2)] flex items-center  gap-[6px]">
-              <span>{balanceValue} DNA is available in wallet </span>
-              <span
-                className="bg-[rgba(99,73,255,0.15)] leading-[18px] rounded text-brand px-[7px] cursor-pointer select-none"
-                onClick={handleAll}
-              >
-                Stake All
-              </span>
-            </div>
-          </div>
-          <div className="bg-[rgba(255,255,255,0.08)] px-5 pt-5 pb-4">
-            <div className="flex justify-between text-xs leading-5">
-              <span className="text-[rgba(255,255,255,0.3)]">You</span>
-              <div className="text-[rgba(255,151,31,0.8)] flex items-center gap-1">
-                <SvgIcon name="qdna" />
-                <span>QDNA</span>
-              </div>
-            </div>
-            <div className="text-xs leading-5 text-[rgba(255,255,255,0.3)]">
-              receive
-            </div>
-            <Input
-              className="bg-transparent p-0 pt-5 pb-[6px] border-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#FF971F] font-bold h-auto text-[36px] leading-9 qdna-selection"
-              value={receive}
-              maxLength={15}
-              onChange={handleReceiveChange}
-              placeholder="0"
-            />
-            <div className="text-xs text-[rgba(255,255,255,0.2)] flex items-center rounded gap-[6px]">
-              <span>{preQDNA ?? 0}</span>
-              <span>+{Number(receive).toFixed(8)}</span>
-              <span>={(Number(preQDNA) + Number(receive)).toFixed(8)}</span>
-            </div>
-            <div className="bg-[rgba(255,255,255,0.05)] h-[1px] mt-5 mb-[10px]"></div>
-            <div className="flex items-center justify-end gap-1 text-xs leading-5 text-[rgba(255,255,255,0.5)]">
-              <span>QDNA Growth Rate</span>
-              <span>
-                +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/H
-              </span>
-              <SvgIcon name="info" />
-            </div>
-          </div>
-        </div>
-        <DialogFooter className="!justify-normal mt-[10px] gap-5">
-          <Button
-            onClick={stake}
-            type="submit"
-            disabled={isPending}
-            className="flex-1 py-4 text-brand bg-[rgba(255,255,255,0.08)] uppercase text-[18px] leading-7 font-bold h-auto"
-          >
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            stake
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button className="flex-1 rounded-[6px] uppercase bg-[rgba(255,255,255,0.05)] text-[18px] w-full text-brand h-[48px] select-none">
+            stask
           </Button>
-          <DialogClose asChild>
+        </DialogTrigger>
+        <DialogContent
+          className="bg-[#0B080D] p-[30px] border-none rounded-[6px] gap-[20px]"
+          hideCloseButton
+        >
+          <DialogHeader>
+            <DialogTitle className="text-[#E2E2E2] text-[36px] font-bold uppercase">
+              stake
+            </DialogTitle>
+          </DialogHeader>
+          <div>
+            <div className="bg-stake bg-black p-5">
+              <div className="flex justify-between text-xs">
+                <span className="text-[rgba(255,255,255,0.3)]">
+                  You deposit
+                </span>
+                <div className="text-brand flex items-center gap-1">
+                  <SvgIcon name="dna" />
+                  <span>DNA</span>
+                </div>
+              </div>
+              <Input
+                className="bg-transparent p-0 pt-5 pb-[6px] border-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-brand font-bold h-auto text-[36px] leading-9 dna-selection"
+                value={deposit}
+                maxLength={15}
+                onChange={handleDepositChange}
+                placeholder="0"
+              />
+              <div className="text-xs text-[rgba(255,255,255,0.2)] flex items-center  gap-[6px]">
+                <span>{balanceValue} DNA is available in wallet </span>
+                <span
+                  className="bg-[rgba(99,73,255,0.15)] leading-[18px] rounded text-brand px-[7px] cursor-pointer select-none"
+                  onClick={handleAll}
+                >
+                  Stake All
+                </span>
+              </div>
+            </div>
+            <div className="bg-[rgba(255,255,255,0.08)] px-5 pt-5 pb-4">
+              <div className="flex justify-between text-xs leading-5">
+                <span className="text-[rgba(255,255,255,0.3)]">You</span>
+                <div className="text-[rgba(255,151,31,0.8)] flex items-center gap-1">
+                  <SvgIcon name="qdna" />
+                  <span>QDNA</span>
+                </div>
+              </div>
+              <div className="text-xs leading-5 text-[rgba(255,255,255,0.3)]">
+                receive
+              </div>
+              <Input
+                className="bg-transparent p-0 pt-5 pb-[6px] border-none outline-none focus-visible:ring-0 focus-visible:ring-offset-0 text-[#FF971F] font-bold h-auto text-[36px] leading-9 qdna-selection"
+                value={receive}
+                maxLength={15}
+                onChange={handleReceiveChange}
+                placeholder="0"
+              />
+              <div className="text-xs text-[rgba(255,255,255,0.2)] flex items-center rounded gap-[6px]">
+                <span>{preQDNA ?? 0}</span>
+                <span>+{Number(receive).toFixed(8)}</span>
+                <span>={(Number(preQDNA) + Number(receive)).toFixed(8)}</span>
+              </div>
+              <div className="bg-[rgba(255,255,255,0.05)] h-[1px] mt-5 mb-[10px]"></div>
+              <div className="flex items-center justify-end gap-1 text-xs leading-5 text-[rgba(255,255,255,0.5)]">
+                <span>QDNA Growth Rate</span>
+                <span>
+                  +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/H
+                </span>
+                <SvgIcon name="info" />
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="!justify-normal mt-[10px] gap-5">
             <Button
+              onClick={stake}
+              type="submit"
               disabled={isPending}
-              className="flex-1  py-4 bg-[rgba(255,255,255,0.08)] text-[#C6C6C6] uppercase  text-[18px] font-bold  h-auto"
+              className="flex-1 py-4 text-brand bg-[rgba(255,255,255,0.08)] uppercase text-[18px] leading-7 font-bold h-auto"
             >
-              cancel
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              stake
             </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            <DialogClose asChild>
+              <Button
+                disabled={isPending}
+                className="flex-1  py-4 bg-[rgba(255,255,255,0.08)] text-[#C6C6C6] uppercase  text-[18px] font-bold  h-auto"
+              >
+                cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={showQDNAerror} onOpenChange={setOpenQDNAerror}>
+        <DialogContent
+          className="bg-[#0B080D] p-[30px] border-none rounded-[6px] gap-[20px]"
+          hideCloseButton
+        >
+          <DialogHeader>
+            <DialogTitle className="text-[#E2E2E2] text-[36px] font-bold uppercase">
+              Error
+            </DialogTitle>
+          </DialogHeader>
+          <SvgIcon name="empty" className="w-[96px] h-[96px] mx-auto my-5" />
+          <div className="text-[#C6C6C6] text-sm">
+            Your QDNA balance is not enough to use this function. Please top up
+            and use it
+          </div>
+          <DialogFooter className="!justify-normal mt-[10px] gap-5">
+            <Button
+              onClick={() => {
+                setOpenQDNAerror(false);
+                setOpen(true);
+              }}
+              type="submit"
+              className="flex-1 py-4 text-brand bg-[rgba(99,73,255,0.1)] uppercase text-[18px] leading-7 font-bold h-auto"
+            >
+              stake
+            </Button>
+            <DialogClose asChild>
+              <Button
+                disabled={isPending}
+                className="w-[120px] py-4 bg-[rgba(255,255,255,0.03)] text-[#C6C6C6] uppercase  text-[18px] font-bold  h-auto"
+              >
+                cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
