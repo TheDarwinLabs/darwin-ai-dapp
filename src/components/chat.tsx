@@ -118,10 +118,11 @@ export const Chat = () => {
 
   const scrollToBottom = () => {
     const timer = setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
+      // TODO scroll to anchor”​
+      // window.scrollTo({
+      //   top: document.documentElement.scrollHeight,
+      //   behavior: "smooth",
+      // });
     }, 50);
     return () => clearTimeout(timer);
   };
