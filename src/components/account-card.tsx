@@ -81,7 +81,7 @@ export const AccountCard = () => {
                 <span>
                   +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/hr
                 </span>
-                <SvgIcon name="info" className="cursor-pointer" />
+                <SvgIcon name="info" className="cursor-pointer w-[14px]" />
               </div>
               <div>MAX {max}</div>
             </div>
@@ -105,7 +105,7 @@ export const AccountCard = () => {
               setActive((prevValue) => !prevValue);
             }}
             className={cn(
-              "cursor-pointer transition-all",
+              "cursor-pointer transition-all w-[24px] h-[24px]",
               active ? "transform rotate-180 " : ""
             )}
           />

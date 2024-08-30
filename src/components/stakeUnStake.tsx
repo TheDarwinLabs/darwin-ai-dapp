@@ -206,7 +206,7 @@ const Stake = () => {
                 <span>
                   +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/H
                 </span>
-                <SvgIcon name="info" />
+                <SvgIcon name="info" className="w-[14px]" />
               </div>
             </div>
           </div>
