@@ -24,6 +24,10 @@ export default function RootLayout({
   // const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/logo.svg" sizes="any" />
+      </head>
       <body className={spaceMono.className}>
         <AppKitProvider initialState={initialState}>
           <AccountDataProvider>{children}</AccountDataProvider>
