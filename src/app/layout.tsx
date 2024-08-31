@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Mono } from "next/font/google";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import { config } from "@/config";
 import AppKitProvider from "@/context";
@@ -20,7 +20,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
+  const initialState = cookieToInitialState(config);
+  // const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en">
       <body className={spaceMono.className}>
