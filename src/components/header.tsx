@@ -38,7 +38,7 @@ export const Header = () => {
               className="relative flex items-center px-6 py-4 focus:bg-[rgba(0,0,0,0.2)] focus:text-white cursor-pointer"
             >
               <span className="w-[80px]">{item.name}</span>
-              <TooltipProvider>
+              <TooltipProvider delayDuration={300}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
@@ -48,7 +48,7 @@ export const Header = () => {
                       <SvgIcon name="info" className="w-6 h-6" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent className="bg-[#CFCBFF] border-[0.5px] border-[#B3ABFF] max-w-[240px] text-[#0B080D] text-xs -ml-4">
                     <p>{item.name}</p>
                   </TooltipContent>
                 </Tooltip>

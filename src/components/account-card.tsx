@@ -6,16 +6,24 @@ import { cn, shortenAddress } from "@/lib/utils";
 import SvgIcon from "@/components/SvgIcon";
 import { StakeUnStake } from "@/components/stakeUnStake";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   useReadMultiplier,
   useReadqDNAPerBlockWithOneStake,
   useReadTotalStakedDNA,
 } from "@/hooks/useContractRead";
 import { useAccountData } from "@/context/AccountDataContext";
 import { useClipboard } from "@/hooks/useClipboard";
+import { Button } from "./ui/button";
 
-export const AccountCard = () => {
+const AccountCard = () => {
+  const { open } = useWeb3Modal();
   const { copy, isCopied, isSupported, error } = useClipboard();
-  const { address } = useAccount();
+  const { address, isConnected, isConnecting } = useAccount();
   const {
     formatBalance,
     stakedDNA,
@@ -40,6 +48,21 @@ export const AccountCard = () => {
 
   const max = (multiplier ?? 0) * Number(stakedDNA ?? 0);
 
+  if (!isConnected) {
+    return (
+      <div className="p-6 border-t-[1px] border-[#2C2C2D]">
+        <Button
+          onClick={() => {
+            console.log("123");
+            open();
+          }}
+          className="text-[#6349FF] bg-[rgba(99,73,255,0.2)] rounded-[6px] w-full h-[80px] text-[18px] uppercase"
+        >
+          {isConnecting ? "Connecting…" : "Connect Wallet"}
+        </Button>
+      </div>
+    );
+  }
   return (
     <div className="p-6 flex flex-col gap-5">
       <div className=" relative bg-[rgba(99,73,255,0.1)] rounded-[6px]">
@@ -81,7 +104,22 @@ export const AccountCard = () => {
                 <span>
                   +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/hr
                 </span>
-                <SvgIcon name="info" className="cursor-pointer w-[14px]" />
+                <TooltipProvider delayDuration={300}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="py-0 h-6 hover:bg-transparent"
+                      >
+                        <SvgIcon name="info" className="w-[14px]" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-[#CFCBFF] border-[0.5px] border-[#B3ABFF] max-w-[240px] text-[#0B080D] text-xs -ml-4">
+                      Tooltips 将鼠标悬停icon时出现。icon有个加底色效果。
+                      高度根据具体的规则文案自适应，宽度最宽到这里。
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <div>MAX {max}</div>
             </div>
@@ -136,3 +174,5 @@ export const AccountCard = () => {
     </div>
   );
 };
+
+export default AccountCard;
