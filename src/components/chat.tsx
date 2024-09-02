@@ -59,6 +59,8 @@ type MessageResponse = {
   object: string;
   created: number;
   model: string;
+  done: boolean;
+  finish_reason: string;
   choices: Array<{
     index: number;
     delta: {
@@ -94,7 +96,7 @@ export const Chat = () => {
     },
   });
 
-  const { data: nonce } = useReadContract({
+  const { data: nonce, refetch: refetchNonce } = useReadContract({
     abi: ForwarderAbi,
     address: ForwarderContract,
     functionName: "getNonce",
@@ -104,7 +106,6 @@ export const Chat = () => {
       select: (value) => Number(formatUnits(value, 0)),
     },
   });
-
 
   const [input, setInput] = useState("");
   const [isMultiline, setIsMultiline] = useState(false);
@@ -141,13 +142,6 @@ export const Chat = () => {
     return () => clearTimeout(timer);
   };
 
-  const getSignnonce = async () => {
-    const response = await fetcher(`account/signnonce`, {
-      method: "GET",
-    });
-    console.log(response);
-  };
-
   const genMessage = async (msgText: string = input) => {
     if (!isConnected || !address) {
       console.error("Please connect your wallet first.");
@@ -161,12 +155,16 @@ export const Chat = () => {
           address: DNAStakeContract,
           abi: DNAStakeAbi,
           functionName: "approve",
-          args: [walletInfo?.address ?? "0x", ethers.parseEther("999999999")],
+          args: [
+            walletInfo?.address ?? "0x",
+            ethers.parseEther("999999999999999"),
+          ],
         });
       } catch (error) {
         setLoading(false);
       }
     }
+    await refetchNonce();
 
     const query = msgText;
     setInput("");
@@ -258,7 +256,7 @@ export const Chat = () => {
       body: chatBody,
       onmessage: (ev: any) => {
         try {
-          const { id, choices } = JSON.parse(ev.data) as MessageResponse;
+          const { id, choices, done } = JSON.parse(ev.data) as MessageResponse;
           mid = id;
           if (!!choices?.length) {
             const { delta, finish_reason } = choices[0];
@@ -298,10 +296,11 @@ export const Chat = () => {
                 return prevMessages;
               });
             }
+          } else if (done) {
+            console.log(JSON.parse(ev.data));
           }
           scrollToBottom();
         } catch (error) {
-          console.log(ev);
           if (ev.data == "[DONE]") {
             setLoading(false);
             setMessages((prevMessages) => {
