@@ -9,6 +9,8 @@ import SvgIcon from "@/components/SvgIcon";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { ethers } from "ethers";
 import { DNAStakeAbi } from "@/abi/DNAStake";
+import { ForwarderAbi } from "@/abi/Forwarder";
+
 import { DNAStakeContract, ForwarderContract } from "@/lib/config";
 import {
   SignTypedDataVersion,
@@ -43,7 +45,7 @@ const ForwardRequestType = [
 ];
 
 const GENERIC_PARAMS =
-  "address from,address approval,address to,uint256 value,uint256 nonce,bytes data,uint256 validUntilTime";
+  "address from,address approval,address to,bytes32 queryHash,uint256 value,uint256 nonce,bytes data,uint256 validUntilTime";
 
 export type Message = {
   id: string;
@@ -91,6 +93,18 @@ export const Chat = () => {
       select: (value) => Number(formatUnits(value)),
     },
   });
+
+  const { data: nonce } = useReadContract({
+    abi: ForwarderAbi,
+    address: ForwarderContract,
+    functionName: "getNonce",
+    args: [walletInfo?.address ?? "0x"],
+    query: {
+      enabled: !!walletInfo?.address,
+      select: (value) => Number(formatUnits(value, 0)),
+    },
+  });
+
 
   const [input, setInput] = useState("");
   const [isMultiline, setIsMultiline] = useState(false);
@@ -165,7 +179,7 @@ export const Chat = () => {
     console.log("queryHash : ", queryHash);
     const data: TypedMessage<MessageTypes> = {
       domain: {
-        name: "dapp.darwinchain.ai",
+        name: "https://dapp.darwinchain.ai",
         version: "1",
         chainId: 610,
         verifyingContract: ForwarderContract,
@@ -183,10 +197,6 @@ export const Chat = () => {
     const APPROVAL_ADDRESS = walletInfo?.address;
     const RECEIPENT_CONTRACT = DNAStakeContract;
     const func = iface.encodeFunctionData("consume", [USER_ORIGIN_ADDRESS]);
-
-    //TODO 从合约获取nonce
-    const nonce = 0;
-
     const req = {
       from: USER_ORIGIN_ADDRESS,
       approval: APPROVAL_ADDRESS,
@@ -210,12 +220,10 @@ export const Chat = () => {
       data.types,
       SignTypedDataVersion.V4
     );
-    console.log("domainSeparator: ", bufferToHex(domainSeparator));
-    console.log("typeHash:", typeHash);
-    console.log("sig:", sig);
 
     const chatBody = {
       query: query,
+      queryHash: queryHash,
       signature: sig,
       nonce: nonce,
       ownerAddress: USER_ORIGIN_ADDRESS,
