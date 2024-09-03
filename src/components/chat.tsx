@@ -3,7 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Markdown from "react-markdown";
-import { cn, formatUnits, getOrCreateWallet, WalletInfo } from "@/lib/utils";
+import {
+  cn,
+  formatUnits,
+  getOrCreateWallet,
+  shortenHash,
+  WalletInfo,
+} from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import SvgIcon from "@/components/SvgIcon";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
@@ -52,6 +58,9 @@ export type Message = {
   request: string;
   response: string;
   loading?: boolean;
+  finishReason?: string;
+  txHash?: string;
+  QDNA?: string;
 };
 
 type MessageResponse = {
@@ -70,6 +79,8 @@ type MessageResponse = {
     finish_reason: string | null;
   }>;
   usage?: any;
+  txHash?: string;
+  QDNA?: string;
 };
 
 export const Chat = () => {
@@ -133,11 +144,10 @@ export const Chat = () => {
 
   const scrollToBottom = () => {
     const timer = setTimeout(() => {
-      // TODO scroll to anchor”​
-      // window.scrollTo({
-      //   top: document.documentElement.scrollHeight,
-      //   behavior: "smooth",
-      // });
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
     }, 50);
     return () => clearTimeout(timer);
   };
@@ -234,8 +244,8 @@ export const Chat = () => {
     return chatBody;
   };
 
-  const handleSendMessage = async () => {
-    const chatBody = await genMessage();
+  const handleSendMessage = async (msgText?: string) => {
+    const chatBody = await genMessage(msgText);
     if (!chatBody) {
       setLoading(false);
       return;
@@ -256,13 +266,38 @@ export const Chat = () => {
       body: chatBody,
       onmessage: (ev: any) => {
         try {
-          const { id, choices, done } = JSON.parse(ev.data) as MessageResponse;
-          mid = id;
+          const { id, choices, done, finish_reason, txHash, QDNA } = JSON.parse(
+            ev.data
+          ) as MessageResponse;
+          if (id) {
+            mid = id;
+          }
           if (!!choices?.length) {
             const { delta, finish_reason } = choices[0];
-            console.log(choices[0]);
-            if (finish_reason == "stop") {
-              // stop
+            if (
+              finish_reason &&
+              [
+                "stop",
+                "Insufficient QDNA",
+                "Insufficient authorization QDNA",
+                "Signature verification failed",
+              ].includes(finish_reason)
+            ) {
+              setMessages((prevMessages) => {
+                if (prevMessages?.length) {
+                  const index = prevMessages.findIndex(
+                    (message) => message.id === mid
+                  );
+                  const updatedMessages = [...prevMessages];
+                  updatedMessages[index] = {
+                    ...updatedMessages[index],
+                    loading: false,
+                    finishReason: finish_reason,
+                  };
+                  return updatedMessages;
+                }
+                return prevMessages;
+              });
               setLoading(false);
             } else if (delta.content) {
               setMessages((prevMessages) => {
@@ -297,7 +332,23 @@ export const Chat = () => {
               });
             }
           } else if (done) {
-            console.log(JSON.parse(ev.data));
+            setMessages((prevMessages) => {
+              if (prevMessages?.length) {
+                const index = prevMessages.findIndex(
+                  (message) => message.id === mid
+                );
+                const updatedMessages = [...prevMessages];
+                updatedMessages[index] = {
+                  ...updatedMessages[index],
+                  loading: false,
+                  finishReason: finish_reason,
+                  txHash: txHash ?? "",
+                  QDNA: QDNA ? formatUnits(QDNA) : "",
+                };
+                return updatedMessages;
+              }
+              return prevMessages;
+            });
           }
           scrollToBottom();
         } catch (error) {
@@ -318,103 +369,7 @@ export const Chat = () => {
               return prevMessages;
             });
           }
-        }
-      },
-      onerror: (err: any) => {
-        console.log(err);
-        setLoading(false);
-      },
-    });
-  };
-
-  const handleRetry = async (msg: Message) => {
-    const chatBody = await genMessage(msg.request);
-    if (!chatBody) {
-      setLoading(false);
-      return;
-    }
-    let mid = msg.id;
-    setMessages((prevMessages) => {
-      if (prevMessages?.length) {
-        const index = prevMessages.findIndex(
-          (message) => message.id === msg.id
-        );
-        const updatedMessages = [...prevMessages];
-        updatedMessages[index] = {
-          ...updatedMessages[index],
-          response: "",
-          loading: true,
-        };
-        return updatedMessages;
-      }
-      return prevMessages;
-    });
-    scrollToBottom();
-    fetchEventSourceWrapper(`chat`, {
-      body: chatBody,
-      onmessage: (ev: any) => {
-        try {
-          const { id, choices } = JSON.parse(ev.data) as MessageResponse;
-          mid = id;
-          if (!!choices?.length) {
-            const { delta, finish_reason } = choices[0];
-            console.log(choices[0]);
-            if (finish_reason == "stop") {
-              // stop
-              setLoading(false);
-            } else if (delta.content) {
-              setMessages((prevMessages) => {
-                if (prevMessages?.length) {
-                  const index = prevMessages.findIndex(
-                    (message) => message.id === mid
-                  );
-                  const updatedMessages = [...prevMessages];
-                  updatedMessages[index] = {
-                    ...updatedMessages[index],
-                    response:
-                      (updatedMessages[index]?.response ?? "") + delta.content,
-                  };
-                  return updatedMessages;
-                }
-                return prevMessages;
-              });
-            } else if (delta.role) {
-              setMessages((prevMessages) => {
-                if (prevMessages?.length) {
-                  const index = prevMessages.findIndex(
-                    (message) => message.id === msg.id
-                  );
-                  const updatedMessages = [...prevMessages];
-                  updatedMessages[index] = {
-                    ...updatedMessages[index],
-                    id: mid,
-                  };
-                  return updatedMessages;
-                }
-                return prevMessages;
-              });
-            }
-          }
           scrollToBottom();
-        } catch (error) {
-          console.log(ev);
-          if (ev.data == "[DONE]") {
-            setLoading(false);
-            setMessages((prevMessages) => {
-              if (prevMessages?.length) {
-                const index = prevMessages.findIndex(
-                  (message) => message.id === mid
-                );
-                const updatedMessages = [...prevMessages];
-                updatedMessages[index] = {
-                  ...updatedMessages[index],
-                  loading: false,
-                };
-                return updatedMessages;
-              }
-              return prevMessages;
-            });
-          }
         }
       },
       onerror: (err: any) => {
@@ -471,18 +426,30 @@ export const Chat = () => {
                 <div className="bg-[#0B080D] py-6 px-[30px]">
                   {msg.response ? (
                     <Markdown className="">{msg.response}</Markdown>
-                  ) : (
+                  ) : msg.loading ? (
                     <LoadingDots />
-                  )}
+                  ) : null}
                 </div>
                 {!msg.loading && (
                   <div className="flex items-center flex-wrap gap-1 text-[#989898]">
                     <SvgIcon name="qdna" />
-                    QDNA <span>-3.5</span> ∙ QDNA <span>hash 0x580...5f34</span>{" "}
-                    ∙
+                    QDNA <span>{msg.QDNA}</span> ∙
+                    <span className="uppercase text-[rgba(255,151,31,0.8)]">
+                      {msg.finishReason},
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => handleSendMessage(msg.request)}
+                      >
+                        Try again
+                      </span>
+                      {` ∙ `}
+                    </span>
+                    {msg.txHash && (
+                      <span>HASH {shortenHash(msg.txHash)} ∙</span>
+                    )}
                     <span
                       className="text-brand cursor-pointer"
-                      onClick={() => handleRetry(msg)}
+                      onClick={() => handleSendMessage(msg.request)}
                     >
                       RETRY
                     </span>

@@ -11,6 +11,11 @@ export function shortenAddress(address?: string) {
   return `${address.slice(0, 5)}...${address.slice(-3)}`;
 }
 
+export function shortenHash(hash?: string) {
+  if (!hash) return "";
+  return `${hash.slice(0, 5)}...${hash.slice(-4)}`;
+}
+
 export function formatUnits(value: unknown, decimals?: string | Numeric) {
   if (!value) return "0";
   return ethers.formatUnits(value as BigNumberish, decimals);
