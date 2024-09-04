@@ -434,16 +434,18 @@ export const Chat = () => {
                   <div className="flex items-center flex-wrap gap-1 text-[#989898]">
                     <SvgIcon name="qdna" />
                     QDNA <span>{msg.QDNA}</span> ∙
-                    <span className="uppercase text-[rgba(255,151,31,0.8)]">
-                      {msg.finishReason},
-                      <span
-                        className="cursor-pointer"
-                        onClick={() => handleSendMessage(msg.request)}
-                      >
-                        Try again
+                    {msg.finishReason != "stop" && (
+                      <span className="uppercase text-[rgba(255,151,31,0.8)]">
+                        {msg.finishReason},
+                        <span
+                          className="cursor-pointer"
+                          onClick={() => handleSendMessage(msg.request)}
+                        >
+                          Try again
+                        </span>
+                        {` ∙ `}
                       </span>
-                      {` ∙ `}
-                    </span>
+                    )}
                     {msg.txHash && (
                       <span>HASH {shortenHash(msg.txHash)} ∙</span>
                     )}

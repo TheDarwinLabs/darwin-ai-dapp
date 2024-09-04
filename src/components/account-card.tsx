@@ -100,16 +100,17 @@ const AccountCard = () => {
               {preQDNA ?? "0.0"}
             </div>
             <div className="text-[rgba(255,255,255,0.35)] flex justify-between">
-              <div className="flex items-center gap-[2px]">
+              <div className="flex items-center">
                 <span>
-                  +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/hr
+                  +{qDNAPerHourWithOneStake}*{Number(preQDNA).toFixed(4) ?? 0}
+                  /hr
                 </span>
                 <TooltipProvider delayDuration={300}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="py-0 h-6 hover:bg-transparent"
+                        className="py-0 px-1 h-6 hover:bg-transparent"
                       >
                         <SvgIcon name="info" className="w-[14px]" />
                       </Button>
