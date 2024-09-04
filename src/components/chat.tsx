@@ -174,8 +174,7 @@ export const Chat = () => {
         setLoading(false);
       }
     }
-    await refetchNonce();
-
+    const { data: newNonce } = await refetchNonce();
     const query = msgText;
     setInput("");
     setTimeout(() => {
@@ -211,7 +210,7 @@ export const Chat = () => {
       to: RECEIPENT_CONTRACT,
       queryHash: queryHash,
       value: 0,
-      nonce: nonce,
+      nonce: newNonce,
       data: toBuffer(func),
       validUntilTime: 0,
     };
