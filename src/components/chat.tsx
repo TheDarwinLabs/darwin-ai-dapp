@@ -232,7 +232,7 @@ export const Chat = () => {
       query: query,
       queryHash: queryHash,
       signature: sig,
-      nonce: nonce,
+      nonce: newNonce,
       ownerAddress: USER_ORIGIN_ADDRESS,
       delegate: APPROVAL_ADDRESS,
       domainSeparator: bufferToHex(domainSeparator),
