@@ -427,7 +427,7 @@ export const Chat = () => {
                 <div className="bg-[#0B080D] py-6 px-[30px]">
                   {msg.response ? (
                     <Markdown
-                      className="prose text-[#F2F2F2]"
+                      className="prose prose-invert text-[#F2F2F2] prose-p:text-[#F2F2F2"
                       remarkPlugins={[remarkGfm]}
                     >
                       {msg.response}
