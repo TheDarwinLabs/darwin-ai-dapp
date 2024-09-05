@@ -1,11 +1,7 @@
 "use client";
 
 import SvgIcon from "@/components/SvgIcon";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useAccount } from "wagmi";
-// import { AccountCard } from "@/components/account-card";
 import dynamic from "next/dynamic";
 
 const AccountCard = dynamic(() => import("./account-card"), { ssr: false });

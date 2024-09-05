@@ -102,7 +102,7 @@ const AccountCard = () => {
             <div className="text-[rgba(255,255,255,0.35)] flex justify-between">
               <div className="flex items-center">
                 <span>
-                  +{qDNAPerHourWithOneStake}*{Number(preQDNA).toFixed(4) ?? 0}
+                  +{qDNAPerHourWithOneStake}*{Number(stakedDNA).toFixed(2) ?? 0}
                   /hr
                 </span>
                 <TooltipProvider delayDuration={300}>
@@ -116,8 +116,7 @@ const AccountCard = () => {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-[#CFCBFF] border-[0.5px] border-[#B3ABFF] max-w-[240px] text-[#0B080D] text-xs -ml-4">
-                      Tooltips 将鼠标悬停icon时出现。icon有个加底色效果。
-                      高度根据具体的规则文案自适应，宽度最宽到这里。
+                      tooltip
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

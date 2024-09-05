@@ -406,7 +406,7 @@ export const Chat = () => {
             <div className="flex-1">
               <div className=" font-bold text-[20px]">Llama 3.1</div>
               <div className="mt-[2px] text-[rgba(255,255,255,0.3)] text-[12px]">
-                运营方 / 或一句话介绍
+                Meta
               </div>
             </div>
             <div className="p-[9px]">
@@ -414,18 +414,14 @@ export const Chat = () => {
             </div>
           </div>
           <div className="mb-8 text-[12px] text-[#727272] leading-5">
-            OpenAI
-            最强大的模型。在定量问题（数学和物理）、创意写作和许多其他具有挑战性的任务中比
-            GPT-3.5 更强大。由 GPT-4o
-            提供支持。上下文窗口已缩短，以优化速度和成本。如需更长的上下文消息，请尝试
-            GPT-4o-128k。OpenAI
-            最强大的模型。在定量问题（数学和物理）、创意写作和许多其他具有挑战性的任务中比
-            GPT-3.5 更强大。由 GPT-4o
-            提供支持。上下文窗口已缩短，以优化速度和成本。如需更长的上下文消息，请尝试
-            GPT-4o-128k。
+            Llama 3.1 is a new version of the large language model (LLM)
+            released by Meta (formerly Facebook), belonging to the LLaMA (Large
+            Language Model Meta AI) series. The LLaMA series is known for its
+            efficiency, accuracy, and openness. Version 3.1 brings several
+            improvements in performance and applications
           </div>
           <div className="flex items-center text-[12px] text-[#727272] gap-1">
-            <span>token * 100 消耗</span>
+            <span>token * 100 consumed</span>
             <SvgIcon name="qdna" />
             <span className="text-[rgba(255,151,31,0.8)]">QDNA * 100</span>
           </div>

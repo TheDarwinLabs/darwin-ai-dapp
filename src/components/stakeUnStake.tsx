@@ -137,7 +137,7 @@ const Stake = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="flex-1 rounded-[6px] uppercase bg-[rgba(255,255,255,0.05)] text-[18px] w-full text-brand h-[48px] select-none">
-            stask
+            stake
           </Button>
         </DialogTrigger>
         <DialogContent
