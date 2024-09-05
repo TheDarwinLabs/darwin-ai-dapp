@@ -18,9 +18,9 @@ import { Button } from "./ui/button";
 
 export const Header = () => {
   const list = [
-    { name: "Llama 3.0" },
-    { name: "Llama 2.0" },
-    { name: "Llama 1" },
+    { name: "Llama 3.1" },
+    // { name: "Llama 2.0" },
+    // { name: "Llama 1" },
   ];
   return (
     <div className="bg-[rgba(0,0,0,0.99)] py-10 sticky top-0 flex items-center px-6">
