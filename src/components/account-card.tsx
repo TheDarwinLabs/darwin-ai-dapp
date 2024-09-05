@@ -70,7 +70,7 @@ const AccountCard = () => {
           }}
           className="text-[#6349FF] bg-[rgba(99,73,255,0.2)] rounded-[6px] w-full h-[80px] text-[18px] uppercase"
         >
-          {isConnecting ? "Connecting…" : "Connect Wallet"}
+          Connect Wallet
         </Button>
       </div>
     );
