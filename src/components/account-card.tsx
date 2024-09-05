@@ -48,7 +48,7 @@ const AccountCard = () => {
     60
   ).toFixed(2);
 
-  const max = (multiplier ?? 0) * Number(stakedDNA ?? 0);
+  const max = ((multiplier ?? 0) * Number(stakedDNA ?? 0)).toFixed(4);
 
   const addTransition = (item: TransitionItem) => {
     setTransitions((preValue) => [item, ...preValue]);
@@ -212,9 +212,15 @@ const TransitionsItem = ({
   delTransition: (item: TransitionItem) => void;
 }) => {
   const isStake = data.type === "stake";
+  const { refetchUserStakeInfo } = useAccountData();
   const { isPending, isSuccess, isError } = useWaitForTransactionReceipt({
     hash: data.hash,
   });
+  useEffect(() => {
+    if (isSuccess) {
+      refetchUserStakeInfo();
+    }
+  }, [isSuccess, refetchUserStakeInfo]);
   return (
     <div
       className={cn("flex items-center justify-between p-[10px]  rounded", {
