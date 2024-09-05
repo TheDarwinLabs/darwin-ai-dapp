@@ -24,21 +24,29 @@ import {
 } from "@/hooks/useContractRead";
 import { useToast } from "@/components/ui/use-toast";
 import { useAccountData } from "@/context/AccountDataContext";
+import { TransitionItem } from "@/lib/types";
 
 const validNumberRegex = /^(?:\d+|\d*\.\d{0,18})$/;
 
-export const StakeUnStake = () => {
+interface StakeUnStakeProps {
+  addTransition: (item: TransitionItem) => void;
+}
+
+export const StakeUnStake: React.FC<StakeUnStakeProps> = ({
+  addTransition,
+}) => {
   return (
     <div className="flex gap-5">
-      <Stake />
-      <UnStake />
+      <Stake addTransition={addTransition} />
+      <UnStake addTransition={addTransition} />
     </div>
   );
 };
 
-const Stake = () => {
+const Stake: React.FC<StakeUnStakeProps> = ({ addTransition }) => {
   const { toast } = useToast();
   const {
+    stakedDNA,
     preQDNA,
     formatBalance,
     refetchUserStakeInfo,
@@ -60,7 +68,7 @@ const Stake = () => {
 
   useEffect(() => {
     // updateReceive(deposit);
-  });
+  }, [hash]);
 
   const stake = async () => {
     if (!deposit || Number(deposit) > Number(balanceValue)) {
@@ -72,14 +80,26 @@ const Stake = () => {
       });
       return;
     }
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       address: DNAStakeContract,
       abi: DNAStakeAbi,
       functionName: "stake",
       value: ethers.parseEther(deposit),
     });
+    const numericValue = new Decimal(deposit);
+    addTransition({
+      type: "stake",
+      hash,
+      amount: numericValue
+        .times(multiplier)
+        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
+        .toString(),
+      status: "Pending",
+    });
     refetchUserStakeInfo();
     setOpen(false);
+    setDeposit("");
+    setReceive("");
   };
 
   const updateReceive = (value: string) => {
@@ -204,7 +224,7 @@ const Stake = () => {
               <div className="flex items-center justify-end gap-1 text-xs leading-5 text-[rgba(255,255,255,0.5)]">
                 <span>QDNA Growth Rate</span>
                 <span>
-                  +{qDNAPerHourWithOneStake}*{preQDNA ?? 0}/H
+                  +{qDNAPerHourWithOneStake}*{stakedDNA ?? 0}/H
                 </span>
                 <SvgIcon name="info" className="w-[14px]" />
               </div>
@@ -272,7 +292,7 @@ const Stake = () => {
   );
 };
 
-const UnStake = () => {
+const UnStake: React.FC<StakeUnStakeProps> = ({ addTransition }) => {
   const { toast } = useToast();
   const { preQDNA, formatBalance, refetchUserStakeInfo } = useAccountData();
   const { data: multiplier = 1 } = useReadMultiplier();
@@ -300,14 +320,26 @@ const UnStake = () => {
       });
       return;
     }
-    await writeContractAsync({
+    const hash = await writeContractAsync({
       address: DNAStakeContract,
       abi: DNAStakeAbi,
       functionName: "unStake",
       args: [ethers.parseEther(withdraw)],
     });
+    const numericValue = new Decimal(withdraw);
+    addTransition({
+      type: "unstake",
+      hash,
+      amount: numericValue
+        .div(multiplier)
+        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
+        .toString(),
+      status: "Pending",
+    });
     refetchUserStakeInfo();
     setOpen(false);
+    setWithdraw("");
+    setClear("");
   };
 
   const updateClear = (value: string) => {

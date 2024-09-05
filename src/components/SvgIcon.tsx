@@ -53,7 +53,7 @@ const SvgIcon: React.FC<SvgIconProps> = ({
   };
 
   return (
-    <span
+    <div
       onClick={handleClick}
       {...props}
       className={cn(
@@ -63,7 +63,7 @@ const SvgIcon: React.FC<SvgIconProps> = ({
       )}
     >
       <IconComponent className="w-full h-full" />
-    </span>
+    </div>
   );
 };
 

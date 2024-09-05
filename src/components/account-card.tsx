@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { useWeb3Modal, useWalletInfo } from "@web3modal/wagmi/react";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useWaitForTransactionReceipt } from "wagmi";
 import { cn, shortenAddress } from "@/lib/utils";
 import SvgIcon from "@/components/SvgIcon";
 import { StakeUnStake } from "@/components/stakeUnStake";
@@ -19,6 +19,7 @@ import {
 import { useAccountData } from "@/context/AccountDataContext";
 import { useClipboard } from "@/hooks/useClipboard";
 import { Button } from "./ui/button";
+import { TransitionItem } from "@/lib/types";
 
 const AccountCard = () => {
   const { open } = useWeb3Modal();
@@ -34,6 +35,7 @@ const AccountCard = () => {
   const { walletInfo } = useWalletInfo();
   const { disconnect } = useDisconnect();
   const [active, setActive] = useState(false);
+  const [transitions, setTransitions] = useState<TransitionItem[]>([]);
 
   // const { data: totalStakedDNA } = useReadTotalStakedDNA();
 
@@ -47,6 +49,16 @@ const AccountCard = () => {
   ).toFixed(2);
 
   const max = (multiplier ?? 0) * Number(stakedDNA ?? 0);
+
+  const addTransition = (item: TransitionItem) => {
+    setTransitions((preValue) => [item, ...preValue]);
+  };
+
+  const delTransition = (item: TransitionItem) => {
+    setTransitions((preValue) =>
+      preValue.filter((trans) => trans.hash != item.hash)
+    );
+  };
 
   if (!isConnected) {
     return (
@@ -65,6 +77,23 @@ const AccountCard = () => {
   }
   return (
     <div className="p-6 flex flex-col gap-5">
+      <div className="text-xs flex flex-col gap-[1px] ">
+        {transitions.map((item) => (
+          <TransitionsItem
+            key={item.hash}
+            data={item}
+            delTransition={delTransition}
+          />
+        ))}
+        {/* <div className="flex items-center justify-between bg-[rgba(241,30,30,0.1)] p-[10px] text-[#F11E1E] rounded">
+          88.8 QDNA 充值失败
+          <SvgIcon name="close" className="w-[18px] h-[18px] cursor-pointer" />
+        </div>
+        <div className="flex items-center justify-between bg-[rgba(60,194,27,0.1)] p-[10px] text-[#3CC21B] rounded">
+          88.8 QDNA 已充值成功
+          <SvgIcon name="close" className="w-[18px] h-[18px] cursor-pointer" />
+        </div> */}
+      </div>
       <div className=" relative bg-[rgba(99,73,255,0.1)] rounded-[6px]">
         <div className="py-5 px-[14px] leading-[22px] text-[12px] ">
           <div className="flex flex-col gap-[2px] text-brand">
@@ -170,7 +199,45 @@ const AccountCard = () => {
           </div>
         </div>
       </div>
-      <StakeUnStake />
+      <StakeUnStake addTransition={addTransition} />
+    </div>
+  );
+};
+
+const TransitionsItem = ({
+  data,
+  delTransition,
+}: {
+  data: TransitionItem;
+  delTransition: (item: TransitionItem) => void;
+}) => {
+  const isStake = data.type === "stake";
+  const { isPending, isSuccess, isError } = useWaitForTransactionReceipt({
+    hash: data.hash,
+  });
+  return (
+    <div
+      className={cn("flex items-center justify-between p-[10px]  rounded", {
+        "bg-[rgba(255,255,255,0.05)] text-[#C6C6C6]": isPending,
+        "bg-[rgba(60,194,27,0.1)] text-[#3CC21B]": isSuccess,
+        "bg-[rgba(241,30,30,0.1)] text-[#F11E1E]": isError,
+      })}
+    >
+      <span>
+        {data.amount} QDNA{" "}
+        {isPending
+          ? "Processing…"
+          : isSuccess
+          ? `${isStake ? "Staked" : "UnStaked"} successfully`
+          : `${isStake ? "Staking" : "UnStaking"} successfully`}
+      </span>
+      {!isPending && (
+        <SvgIcon
+          name="close"
+          className="w-[18px] h-[18px] cursor-pointer"
+          onClick={() => delTransition(data)}
+        />
+      )}
     </div>
   );
 };

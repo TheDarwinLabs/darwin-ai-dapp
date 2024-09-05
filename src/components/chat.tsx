@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import {
   cn,
   formatUnits,
+  generateRandomString,
   getOrCreateWallet,
   shortenHash,
   WalletInfo,
@@ -32,6 +33,7 @@ import { Loader2 } from "lucide-react";
 import LoadingDots from "./LoadingDots";
 import { fetcher } from "@/services/api/fetcher";
 import { useAccountData } from "@/context/AccountDataContext";
+import Link from "next/link";
 
 const EIP712DomainType = [
   { name: "name", type: "string" },
@@ -108,7 +110,7 @@ export const Chat = () => {
     },
   });
 
-  const { data: nonce, refetch: refetchNonce } = useReadContract({
+  const { refetch: refetchNonce } = useReadContract({
     abi: ForwarderAbi,
     address: ForwarderContract,
     functionName: "getNonce",
@@ -153,13 +155,13 @@ export const Chat = () => {
     return () => clearTimeout(timer);
   };
 
-  const genMessage = async (msgText: string = input) => {
+  const genMessage = async (query: string) => {
     if (!isConnected || !address) {
       console.error("Please connect your wallet first.");
       return;
     }
-    if (!msgText.trim()) return;
-    setLoading(true);
+    if (!query.trim()) return;
+
     if ((allowance ?? 0) < 10000) {
       try {
         await writeContractAsync({
@@ -175,12 +177,8 @@ export const Chat = () => {
         setLoading(false);
       }
     }
-    const { data: newNonce } = await refetchNonce();
-    const query = msgText;
-    setInput("");
-    setTimeout(() => {
-      handleInput();
-    }, 0);
+    const { data: nonce } = await refetchNonce();
+
     const typeName: string = `ForwardRequest(${GENERIC_PARAMS})`;
     const typeHash: string = ethers.keccak256(ethers.toUtf8Bytes(typeName));
     const queryHash = ethers.keccak256(ethers.toUtf8Bytes(query));
@@ -209,9 +207,9 @@ export const Chat = () => {
       from: USER_ORIGIN_ADDRESS,
       approval: APPROVAL_ADDRESS,
       to: RECEIPENT_CONTRACT,
-      queryHash: queryHash,
+      queryHash,
       value: 0,
-      nonce: newNonce,
+      nonce,
       data: toBuffer(func),
       validUntilTime: 0,
     };
@@ -230,10 +228,10 @@ export const Chat = () => {
     );
 
     const chatBody = {
-      query: query,
-      queryHash: queryHash,
+      query,
+      queryHash,
       signature: sig,
-      nonce: newNonce,
+      nonce,
       ownerAddress: USER_ORIGIN_ADDRESS,
       delegate: APPROVAL_ADDRESS,
       domainSeparator: bufferToHex(domainSeparator),
@@ -244,13 +242,20 @@ export const Chat = () => {
     return chatBody;
   };
 
-  const handleSendMessage = async (msgText?: string) => {
+  const handleSendMessage = async (msgText: string = input) => {
+    if (loading) return;
+    setLoading(true);
+    setInput("");
+    setTimeout(() => {
+      handleInput();
+    }, 0);
     const chatBody = await genMessage(msgText);
     if (!chatBody) {
       setLoading(false);
       return;
     }
-    let mid = "temp";
+    const tempId = generateRandomString(10);
+    let mid = tempId;
     const newMessage = {
       id: mid,
       request: chatBody.query,
@@ -269,12 +274,12 @@ export const Chat = () => {
           const { id, choices, done, finish_reason, txHash, QDNA } = JSON.parse(
             ev.data
           ) as MessageResponse;
-          if (id) {
+          if (id && mid != id) {
             mid = id;
             setMessages((prevMessages) => {
               if (prevMessages?.length) {
                 const index = prevMessages.findIndex(
-                  (message) => message.id === "temp"
+                  (message) => message.id === tempId
                 );
                 const updatedMessages = [...prevMessages];
                 updatedMessages[index] = {
@@ -312,7 +317,6 @@ export const Chat = () => {
                 }
                 return prevMessages;
               });
-              setLoading(false);
             } else if (delta.content) {
               setMessages((prevMessages) => {
                 if (prevMessages?.length) {
@@ -466,7 +470,17 @@ export const Chat = () => {
                       </span>
                     )}
                     {msg.txHash && (
-                      <span>HASH {shortenHash(msg.txHash)} ∙</span>
+                      <>
+                        <span>HASH</span>
+                        <Link
+                          target="_blank"
+                          className="hover:underline"
+                          href={`https://explorer.darwinchain.ai/tx/${msg.txHash}`}
+                        >
+                          {shortenHash(msg.txHash)}
+                        </Link>
+                        <span> ∙</span>
+                      </>
                     )}
                     <span
                       className="text-brand cursor-pointer"
