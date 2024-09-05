@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   cn,
   formatUnits,
@@ -425,7 +426,12 @@ export const Chat = () => {
                 </div>
                 <div className="bg-[#0B080D] py-6 px-[30px]">
                   {msg.response ? (
-                    <Markdown className="">{msg.response}</Markdown>
+                    <Markdown
+                      className="prose text-[#F2F2F2]"
+                      remarkPlugins={[remarkGfm]}
+                    >
+                      {msg.response}
+                    </Markdown>
                   ) : msg.loading ? (
                     <LoadingDots />
                   ) : null}
