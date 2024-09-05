@@ -85,7 +85,7 @@ type MessageResponse = {
 
 export const Chat = () => {
   const { address, isConnected } = useAccount();
-  const { setOpenQDNAerror } = useAccountData();
+  const { setOpenQDNAerror, refetchUserStakeInfo } = useAccountData();
   const { data: hash, writeContractAsync } = useWriteContract();
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -367,6 +367,7 @@ export const Chat = () => {
               }
               return prevMessages;
             });
+            refetchUserStakeInfo();
           }
           scrollToBottom();
         }
