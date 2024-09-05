@@ -271,6 +271,20 @@ export const Chat = () => {
           ) as MessageResponse;
           if (id) {
             mid = id;
+            setMessages((prevMessages) => {
+              if (prevMessages?.length) {
+                const index = prevMessages.findIndex(
+                  (message) => message.id === "temp"
+                );
+                const updatedMessages = [...prevMessages];
+                updatedMessages[index] = {
+                  ...updatedMessages[index],
+                  id: mid,
+                };
+                return updatedMessages;
+              }
+              return prevMessages;
+            });
           }
           if (!!choices?.length) {
             const { delta, finish_reason } = choices[0];
@@ -316,22 +330,25 @@ export const Chat = () => {
                 return prevMessages;
               });
             } else if (delta.role) {
-              setMessages((prevMessages) => {
-                if (prevMessages?.length) {
-                  const index = prevMessages.findIndex(
-                    (message) => message.id === "temp"
-                  );
-                  const updatedMessages = [...prevMessages];
-                  updatedMessages[index] = {
-                    ...updatedMessages[index],
-                    id: mid,
-                  };
-                  return updatedMessages;
-                }
-                return prevMessages;
-              });
+              // setMessages((prevMessages) => {
+              //   if (prevMessages?.length) {
+              //     const index = prevMessages.findIndex(
+              //       (message) => message.id === "temp"
+              //     );
+              //     const updatedMessages = [...prevMessages];
+              //     updatedMessages[index] = {
+              //       ...updatedMessages[index],
+              //       id: mid,
+              //     };
+              //     return updatedMessages;
+              //   }
+              //   return prevMessages;
+              // });
             }
           } else if (done) {
+            if (finish_reason === "Insufficient QDNA") {
+              setOpenQDNAerror(true);
+            }
             setMessages((prevMessages) => {
               if (prevMessages?.length) {
                 const index = prevMessages.findIndex(
