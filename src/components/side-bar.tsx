@@ -16,12 +16,20 @@ export const SideBar = () => {
       </div>
       <div className="">
         <AccountCard />
-        <div className="flex gap-1 px-6 py-[30px] text-sm uppercase text-[#727272] border-t-[1px] border-[#2C2C2D]">
+        <div className="flex gap-1 justify-center py-[30px] text-sm uppercase text-[#727272] border-t-[1px] border-[#2C2C2D]">
           <Link href="">Support</Link>
           <span>∙</span>
           <Link href="">FAQ</Link>
           <span>∙</span>
           <Link href="">Give Feedback</Link>
+          <span>∙</span>
+          <Link
+            target="_blank"
+            href="https://darwinchain.gitbook.io/darwin-ai/for-users/faucet"
+            className="hover:underline"
+          >
+            Faucet
+          </Link>
         </div>
       </div>
     </div>
