@@ -86,14 +86,10 @@ const Stake: React.FC<StakeUnStakeProps> = ({ addTransition }) => {
       functionName: "stake",
       value: ethers.parseEther(deposit),
     });
-    const numericValue = new Decimal(deposit);
     addTransition({
       type: "stake",
       hash,
-      amount: numericValue
-        .times(multiplier)
-        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
-        .toString(),
+      amount: deposit,
       status: "Pending",
     });
     refetchUserStakeInfo();
@@ -326,14 +322,10 @@ const UnStake: React.FC<StakeUnStakeProps> = ({ addTransition }) => {
       functionName: "unStake",
       args: [ethers.parseEther(withdraw)],
     });
-    const numericValue = new Decimal(withdraw);
     addTransition({
       type: "unstake",
       hash,
-      amount: numericValue
-        .div(multiplier)
-        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
-        .toString(),
+      amount: withdraw,
       status: "Pending",
     });
     refetchUserStakeInfo();

@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ethers, BigNumberish, Numeric } from "ethers";
+import Decimal from "decimal.js";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,6 +21,16 @@ export function formatUnits(value: unknown, decimals?: string | Numeric) {
   if (!value) return "0";
   return ethers.formatUnits(value as BigNumberish, decimals);
 }
+
+export const formatNumber = (
+  value?: number | string | null,
+  precision = 6,
+  rounding = Decimal.ROUND_DOWN
+) => {
+  if (value === null || value === undefined) return "0.0";
+  const numericValue = new Decimal(value);
+  return numericValue.toDecimalPlaces(precision, rounding).toString();
+};
 
 export interface WalletInfo {
   privateKey: `0x${string}`;

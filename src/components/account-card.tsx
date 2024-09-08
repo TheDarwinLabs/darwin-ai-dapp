@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { useWeb3Modal, useWalletInfo } from "@web3modal/wagmi/react";
 import { useAccount, useDisconnect, useWaitForTransactionReceipt } from "wagmi";
-import { cn, shortenAddress } from "@/lib/utils";
+import { cn, formatNumber, shortenAddress } from "@/lib/utils";
 import SvgIcon from "@/components/SvgIcon";
 import { StakeUnStake } from "@/components/stakeUnStake";
 import {
@@ -48,10 +48,10 @@ const AccountCard = () => {
     60
   ).toFixed(2);
 
-  const max = ((multiplier ?? 0) * Number(stakedDNA ?? 0)).toFixed(4);
+  const max = formatNumber((multiplier ?? 0) * Number(stakedDNA ?? 0), 4);
 
   const addTransition = (item: TransitionItem) => {
-    setTransitions((preValue) => [item, ...preValue]);
+    setTransitions((preValue) => [item, ...preValue].slice(0, 5));
   };
 
   const delTransition = (item: TransitionItem) => {
@@ -76,8 +76,8 @@ const AccountCard = () => {
     );
   }
   return (
-    <div className="p-6 flex flex-col gap-5">
-      <div className="text-xs flex flex-col gap-[1px] ">
+    <div className="grow p-6 flex flex-col gap-5 overflow-hidden">
+      <div className="grow text-xs flex flex-col gap-[1px] overflow-auto scrollbar-none">
         {transitions.map((item) => (
           <TransitionsItem
             key={item.hash}
@@ -85,14 +85,6 @@ const AccountCard = () => {
             delTransition={delTransition}
           />
         ))}
-        {/* <div className="flex items-center justify-between bg-[rgba(241,30,30,0.1)] p-[10px] text-[#F11E1E] rounded">
-          88.8 QDNA 充值失败
-          <SvgIcon name="close" className="w-[18px] h-[18px] cursor-pointer" />
-        </div>
-        <div className="flex items-center justify-between bg-[rgba(60,194,27,0.1)] p-[10px] text-[#3CC21B] rounded">
-          88.8 QDNA 已充值成功
-          <SvgIcon name="close" className="w-[18px] h-[18px] cursor-pointer" />
-        </div> */}
       </div>
       <div className=" relative bg-[rgba(99,73,255,0.1)] rounded-[6px]">
         <div className="py-5 px-[14px] leading-[22px] text-[12px] ">
@@ -101,9 +93,11 @@ const AccountCard = () => {
               <SvgIcon name="dna" />
               DNA
             </div>
-            <div className="text-[20px] font-bold">{stakedDNA ?? "0.0"}</div>
+            <div className="text-[20px] font-bold">
+              {formatNumber(stakedDNA)}
+            </div>
             <div className="text-[rgba(255,255,255,0.35)]">
-              Balance {formatBalance(8)}
+              Balance {formatBalance(6)}
             </div>
           </div>
           <div className="my-[14px] mr-[7px] h-[1px] bg-[rgba(255,255,255,0.03)]"></div>
@@ -126,12 +120,12 @@ const AccountCard = () => {
               </div>
             </div>
             <div className="text-[#FF971F] text-[20px] font-bold">
-              {preQDNA ?? "0.0"}
+              {formatNumber(preQDNA)}
             </div>
             <div className="text-[rgba(255,255,255,0.35)] flex justify-between">
               <div className="flex items-center">
                 <span>
-                  +{qDNAPerHourWithOneStake}*{Number(stakedDNA).toFixed(2) ?? 0}
+                  +{qDNAPerHourWithOneStake}*{formatNumber(stakedDNA, 2)}
                   /hr
                 </span>
                 <TooltipProvider delayDuration={300}>
@@ -230,7 +224,7 @@ const TransitionsItem = ({
       })}
     >
       <span>
-        {data.amount} QDNA{" "}
+        {data.amount} DNA{" "}
         {isPending
           ? "Processing…"
           : isSuccess
