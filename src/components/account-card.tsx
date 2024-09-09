@@ -62,16 +62,19 @@ const AccountCard = () => {
 
   if (!isConnected) {
     return (
-      <div className="p-6 border-t-[1px] border-[#2C2C2D]">
-        <Button
-          onClick={() => {
-            console.log("123");
-            open();
-          }}
-          className="text-[#6349FF] bg-[rgba(99,73,255,0.2)] rounded-[6px] w-full h-[80px] text-[18px] uppercase"
-        >
-          Connect Wallet
-        </Button>
+      <div className="grow flex flex-col">
+        <div className="grow"></div>
+        <div className="p-6 border-t-[1px] border-[#2C2C2D]">
+          <Button
+            onClick={() => {
+              console.log("123");
+              open();
+            }}
+            className="text-[#6349FF] bg-[rgba(99,73,255,0.2)] rounded-[6px] w-full h-[80px] text-[18px] uppercase"
+          >
+            Connect Wallet
+          </Button>
+        </div>
       </div>
     );
   }
