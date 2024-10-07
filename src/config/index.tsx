@@ -16,27 +16,25 @@ export const metadata = {
 };
 
 const DarwinDevnet: Chain = {
-  id: 11155111,
-  name: "Sepolia",
+  id: 610,
+  name: "Darwin Devnet",
   nativeCurrency: {
-    name: "ETH",
-    symbol: "ETH",
+    name: "DNA",
+    symbol: "DNA",
     decimals: 18,
   },
   rpcUrls: {
     default: {
-      http: ["https://ethereum-sepolia.blockpi.network/v1/rpc/public"],
-      webSocket: ["wss://ethereum-sepolia.blockpi.network/v1/rpc/public"],
-      
+      http: ["https://devnet-rpc.darwinchain.ai"],
+      webSocket: ["wss://devnet-rpc.darwinchain.ai"],
     },
   },
   blockExplorers: {
-    default: { name: "Explorer", url: "https://sepolia.etherscan.io" },
-    
+    default: { name: "Explorer", url: "https://explorer.darwinchain.ai" },
   },
 };
 // Create wagmiConfig
-const chains = [DarwinDevnet] as const;
+const chains = [sepolia] as const;
 
 export const config = defaultWagmiConfig({
   chains,

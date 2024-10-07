@@ -36,8 +36,8 @@ importers:
         specifier: ^5.51.24
         version: 5.51.24(react@18.3.1)
       '@web3modal/wagmi':
-        specifier: ^5.1.3
-        version: 5.1.3(6q2sm26ejirlwrjszeqedwdfti)
+        specifier: ^5.1.11
+        version: 5.1.11(6q2sm26ejirlwrjszeqedwdfti)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -2076,11 +2076,18 @@ packages:
     resolution: {integrity: sha512-9MWVt33MFrLiAeK9nqY/B30/y0M4uiq8v9EXenIBQdlgkmXM++RTcOnn7u7EAbthGgzx3WLPRm4ViwIb+rI/Cg==}
     engines: {node: '>=18'}
 
+  '@walletconnect/core@2.16.1':
+    resolution: {integrity: sha512-UlsnEMT5wwFvmxEjX8s4oju7R3zadxNbZgsFeHEsjh7uknY2zgmUe1Lfc5XU6zyPb1Jx7Nqpdx1KN485ee8ogw==}
+    engines: {node: '>=18'}
+
   '@walletconnect/environment@1.0.1':
     resolution: {integrity: sha512-T426LLZtHj8e8rYnKfzsw1aG6+M0BT1ZxayMdv/p8yM0MU+eJDISqNY3/bccxRr4LrF9csq02Rhqt08Ibl0VRg==}
 
   '@walletconnect/ethereum-provider@2.15.1':
     resolution: {integrity: sha512-3ssEAKc/rLYshwyE2ZIaoTxzi/p9Ws+kj/FIsd1Ed/CC37Rl5l/KYHaRJtevWeni9s4dGqyqKsYkJ0VwwUcnfQ==}
+
+  '@walletconnect/ethereum-provider@2.16.1':
+    resolution: {integrity: sha512-oD7DNCssUX3plS5gGUZ9JQ63muQB/vxO68X6RzD2wd8gBsYtSPw4BqYFc7KTO6dUizD6gfPirw32yW2pTvy92w==}
 
   '@walletconnect/events@1.0.1':
     resolution: {integrity: sha512-NPTqaoi0oPBVNuLv7qPaJazmGHs5JGyO8eEAk5VGKmJzDR7AHzD4k6ilox5kxk1iwiOnFopBOOMLs86Oa76HpQ==}
@@ -2123,9 +2130,6 @@ packages:
   '@walletconnect/modal@2.6.2':
     resolution: {integrity: sha512-eFopgKi8AjKf/0U4SemvcYw9zlLpx9njVN8sf6DAkowC2Md0gPU/UNEbH1Wwj407pEKnEds98pKWib1NN1ACoA==}
 
-  '@walletconnect/relay-api@1.0.10':
-    resolution: {integrity: sha512-tqrdd4zU9VBNqUaXXQASaexklv6A54yEyQQEXYOCr+Jz8Ket0dmPBDyg19LVSNUN2cipAghQc45/KVmfFJ0cYw==}
-
   '@walletconnect/relay-api@1.0.11':
     resolution: {integrity: sha512-tLPErkze/HmC9aCmdZOhtVmYZq1wKfWTJtygQHoWtgg722Jd4homo54Cs4ak2RUFUZIGO2RsOpIcWipaua5D5Q==}
 
@@ -2138,23 +2142,29 @@ packages:
   '@walletconnect/sign-client@2.15.1':
     resolution: {integrity: sha512-YnLNEmCHgZ8yBpE3hwZnHD/bVznVMguSAlwLBNOoWUH2f4d9mR8bqa6KeVXqZ3e8mVHcxKTJTjTJ3oQMLyKIjw==}
 
+  '@walletconnect/sign-client@2.16.1':
+    resolution: {integrity: sha512-s2Tx2n2duxt+sHtuWXrN9yZVaHaYqcEcjwlTD+55/vs5NUPlISf+fFmZLwSeX1kUlrSBrAuxPUcqQuRTKcjLOA==}
+
   '@walletconnect/time@1.0.2':
     resolution: {integrity: sha512-uzdd9woDcJ1AaBZRhqy5rNC9laqWGErfc4dxA9a87mPdKOgWMD85mcFo9dIYIts/Jwocfwn07EC6EzclKubk/g==}
-
-  '@walletconnect/types@2.14.0':
-    resolution: {integrity: sha512-vevMi4jZLJ55vLuFOicQFmBBbLyb+S0sZS4IsaBdZkQflfGIq34HkN13c/KPl4Ye0aoR4/cUcUSitmGIzEQM5g==}
 
   '@walletconnect/types@2.15.1':
     resolution: {integrity: sha512-4WkMsHD8ioZI5GmxNT0qMlz6msI7ZajBcTyDxfRncaNZVau0C+Btw1U4jWO+gxwJVDJY+Ue/cb1QKJ5BanZsyw==}
 
+  '@walletconnect/types@2.16.1':
+    resolution: {integrity: sha512-9P4RG4VoDEF+yBF/n2TF12gsvT/aTaeZTVDb/AOayafqiPnmrQZMKmNCJJjq1sfdsDcHXFcZWMGsuCeSJCmrXA==}
+
   '@walletconnect/universal-provider@2.15.1':
     resolution: {integrity: sha512-JvKwHoE/ugWSKOmrEr03go1V79N0bbYV6w24Lqlzz4VAoReZZo8TDKsya7UkJ1L5HUCgKVP+AVktuJv8khzJ6w==}
 
-  '@walletconnect/utils@2.14.0':
-    resolution: {integrity: sha512-vRVomYQEtEAyCK2c5bzzEvtgxaGGITF8mWuIL+WYSAMyEJLY97mirP2urDucNwcUczwxUgI+no9RiNFbUHreQQ==}
+  '@walletconnect/universal-provider@2.16.1':
+    resolution: {integrity: sha512-q/tyWUVNenizuClEiaekx9FZj/STU1F3wpDK4PUIh3xh+OmUI5fw2dY3MaNDjyb5AyrS0M8BuQDeuoSuOR/Q7w==}
 
   '@walletconnect/utils@2.15.1':
     resolution: {integrity: sha512-i5AR8XpZdcX8ghaCjYV13Er/KAGe56c1mLaG9c2cv9kmnZMZijeMdInjX/flnSM1RFDUiZXvKPMUNwlCL4NsWw==}
+
+  '@walletconnect/utils@2.16.1':
+    resolution: {integrity: sha512-aoQirVoDoiiEtYeYDtNtQxFzwO/oCrz9zqeEEXYJaAwXlGVTS34KFe7W3/Rxd/pldTYKFOZsku2EzpISfH8Wsw==}
 
   '@walletconnect/window-getters@1.0.1':
     resolution: {integrity: sha512-vHp+HqzGxORPAN8gY03qnbTMnhqIwjeRJNOMOAzePRg4xVEEE2WvYsI9G2NMjOknA8hnuYbU3/hwLcKbjhc8+Q==}
@@ -2162,32 +2172,32 @@ packages:
   '@walletconnect/window-metadata@1.0.1':
     resolution: {integrity: sha512-9koTqyGrM2cqFRW517BPY/iEtUDx2r1+Pwwu5m7sJ7ka79wi3EyqhqcICk/yDmv6jAS1rjKgTKXlEhanYjijcA==}
 
-  '@web3modal/base@5.1.3':
-    resolution: {integrity: sha512-VmAhhSa4VTcqC6JFplU4PQgDS52Ciau9bHTI9VqSONNC24LAVLMw0nz6Hgx0D6bNFvevCNxXFIK/cUI0XfIRCw==}
+  '@web3modal/base@5.1.11':
+    resolution: {integrity: sha512-wJCsqQ1FG0Isiv0Exaz2Sv+FpijVmNPNay+sGdV5HP2SpBAR/1xxHca2/vLBdACX7rYAFAj723DYQE0fmUpIaw==}
 
-  '@web3modal/common@5.1.3':
-    resolution: {integrity: sha512-izdDpNPlXcSsl8ZrELmg+8Z83OYcFnm4YYppQb2li26NAmVU+mrevcX+2QV6u7htH4mKmN3jv4j01H1LtjaKmw==}
+  '@web3modal/common@5.1.11':
+    resolution: {integrity: sha512-YfSklKjjiM1RGxFTQm3ycYZ2Ktb6vswt9eg8lGXRknxN+SC7bCtuvgtyyCO0Z9/f9dPMOGIAmoJ/y6WHXWQqcg==}
 
-  '@web3modal/core@5.1.3':
-    resolution: {integrity: sha512-BG8g39rLMKppqMZCF81aKoDX8FvifITPO2UYyRkUnmG7hENBcs/4weY8aPJSblc3ouMYHJtrEoNfC8uHnbAeWw==}
+  '@web3modal/core@5.1.11':
+    resolution: {integrity: sha512-ugUVFVml1vVW+V7yxkn/AYYdrUJzn4ulFbDlxDMpmukKY6sDYLMMGAJ84O8ZC/OPyC7009NYd3mKZurxEyWkHw==}
 
-  '@web3modal/polyfills@5.1.3':
-    resolution: {integrity: sha512-9yn3O46Ai0DKBS3qCgq9FvNZmtxn6hz6rgiKCUoMeD5a5VmegELI3SmVaFVbkJqjAcC+kqheFTwhLv5J2ammyg==}
+  '@web3modal/polyfills@5.1.11':
+    resolution: {integrity: sha512-BDIDYA2LGTCquahbZ+wyWQy4IBOPeKVSgt4ZpFir1fnVJUPkEluSwZStcKLtCzQvxJgER1sLicUrjJQHF36TOg==}
 
-  '@web3modal/scaffold-ui@5.1.3':
-    resolution: {integrity: sha512-NphWc2FfRLU1vaVPE4/CfTxQnNO9oQ/tDSn6VQSzY9f4qXovGV3/NEeG9d8KiJangtKA8J1l5CETSwWY8qZFhQ==}
+  '@web3modal/scaffold-ui@5.1.11':
+    resolution: {integrity: sha512-fBqzd7DStUaEjtdbEU86rzY4XIgt8c8JN8oxS/xnUEopmjFYvBLCCVEfbTkZyJrRvAAphz7+oS4TVzXw9k6t5A==}
 
-  '@web3modal/scaffold-utils@5.1.3':
-    resolution: {integrity: sha512-0KnavomfCdykLLMltZxun5vAKgN0Tp/iXNx/tdEFhveyf5yvDtDfbQYmf3PhRN/IEHcBn4vvl+GuXh2IPZ8i/Q==}
+  '@web3modal/scaffold-utils@5.1.11':
+    resolution: {integrity: sha512-4bcYpQ3oxak5mDZMW5/7ayrhpaJHy6dCfUio15AGPHnQlFjkqcfSuuG0Io8Oj8VUXcK2UBLch9YiEDz4Xgce9Q==}
 
-  '@web3modal/siwe@5.1.3':
-    resolution: {integrity: sha512-0DnIKH25TMNfIaLdN5dnw01LXcyLH7RtfJzyWAWiWxHAqC3WiLNt94pb9s5GiX9ipbjOk92ZpULpNfB4KtD0WQ==}
+  '@web3modal/siwe@5.1.11':
+    resolution: {integrity: sha512-1aKEtMosACyY0SRjHjdcA/g3bRtMojTxlK7S/T6zBk57X/P3xcEZq9J8UM73plmGewjZdLaqGMgv6B/k/WleZQ==}
 
-  '@web3modal/ui@5.1.3':
-    resolution: {integrity: sha512-g7BXJQ56l7PgLDLbz22ZJaZTL94zs5kiOjn3naQQExwoPTbTU6z/CmqOrO4ZNhiGY5II3Z/48MnzFIcvgl1PBQ==}
+  '@web3modal/ui@5.1.11':
+    resolution: {integrity: sha512-L0L+2YOK+ONx+W7GPtkSdKZuAQ8cjcS5N8kp+WZzKOMUTeDLuXKtSnES4p/ShOVmkpV6qB8r0pPA9xgFh1D3ow==}
 
-  '@web3modal/wagmi@5.1.3':
-    resolution: {integrity: sha512-NBzvjbRv30xfh6m9sQSNPuRl+/OLfLLKtyaX7AW3ATnX94XedR4PwThmbz1gF6ewAEj2gd8a+GZXC5P0axgjEw==}
+  '@web3modal/wagmi@5.1.11':
+    resolution: {integrity: sha512-etV1qfBVvh41EMuBHXUpcO/W818jZVNh5/l9Z5kqRPZxlQmBaJbt5mTzw6nw/Lujoe1yYKugGQFhgjfEQK+eyA==}
     peerDependencies:
       '@wagmi/connectors': '>=4'
       '@wagmi/core': '>=2.0.0'
@@ -2204,8 +2214,8 @@ packages:
       vue:
         optional: true
 
-  '@web3modal/wallet@5.1.3':
-    resolution: {integrity: sha512-+SihEFwPt7kE8lrszeDFX4/hMCYr9Gor/N2m+ke/7n/b2vPquO1sldxFex1G9LrzYFOglXsZIcZVZL3Ce0RX4w==}
+  '@web3modal/wallet@5.1.11':
+    resolution: {integrity: sha512-/ooQZXK1h7LGBUemebldYPAV2oJAgxkgSiCMoHWynhuS0LO3BzhOhGL+jV19w4iU81bS1GSNFTxYT9LL6Scesw==}
 
   '@webassemblyjs/ast@1.12.1':
     resolution: {integrity: sha512-EKfMUOPRRUTy5UII4qJDGPpqfwjOmZ5jeGFwid9mnoqIFK+e0vqoi1qH56JpmZSzEL53jKnNzScdmftJyG5xWg==}
@@ -8689,6 +8699,42 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
+  '@walletconnect/core@2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@walletconnect/heartbeat': 1.2.2
+      '@walletconnect/jsonrpc-provider': 1.0.14
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/jsonrpc-ws-connection': 1.0.14(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/logger': 2.1.2
+      '@walletconnect/relay-api': 1.0.11
+      '@walletconnect/relay-auth': 1.0.4
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.16.1
+      '@walletconnect/utils': 2.16.1
+      events: 3.3.0
+      lodash.isequal: 4.5.0
+      uint8arrays: 3.1.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - ioredis
+      - uWebSockets.js
+      - utf-8-validate
+
   '@walletconnect/environment@1.0.1':
     dependencies:
       tslib: 1.14.1
@@ -8704,6 +8750,39 @@ snapshots:
       '@walletconnect/types': 2.15.1
       '@walletconnect/universal-provider': 2.15.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@walletconnect/utils': 2.15.1
+      events: 3.3.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@types/react'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - encoding
+      - ioredis
+      - react
+      - uWebSockets.js
+      - utf-8-validate
+
+  '@walletconnect/ethereum-provider@2.16.1(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@walletconnect/jsonrpc-http-connection': 1.0.8
+      '@walletconnect/jsonrpc-provider': 1.0.14
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/modal': 2.6.2(@types/react@18.3.3)(react@18.3.1)
+      '@walletconnect/sign-client': 2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@walletconnect/types': 2.16.1
+      '@walletconnect/universal-provider': 2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@walletconnect/utils': 2.16.1
       events: 3.3.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -8823,10 +8902,6 @@ snapshots:
       - '@types/react'
       - react
 
-  '@walletconnect/relay-api@1.0.10':
-    dependencies:
-      '@walletconnect/jsonrpc-types': 1.0.4
-
   '@walletconnect/relay-api@1.0.11':
     dependencies:
       '@walletconnect/jsonrpc-types': 1.0.4
@@ -8873,11 +8948,40 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
+  '@walletconnect/sign-client@2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@walletconnect/core': 2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@walletconnect/events': 1.0.1
+      '@walletconnect/heartbeat': 1.2.2
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/logger': 2.1.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.16.1
+      '@walletconnect/utils': 2.16.1
+      events: 3.3.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - bufferutil
+      - ioredis
+      - uWebSockets.js
+      - utf-8-validate
+
   '@walletconnect/time@1.0.2':
     dependencies:
       tslib: 1.14.1
 
-  '@walletconnect/types@2.14.0':
+  '@walletconnect/types@2.15.1':
     dependencies:
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.2
@@ -8901,7 +9005,7 @@ snapshots:
       - ioredis
       - uWebSockets.js
 
-  '@walletconnect/types@2.15.1':
+  '@walletconnect/types@2.16.1':
     dependencies:
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.2
@@ -8955,22 +9059,17 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  '@walletconnect/utils@2.14.0':
+  '@walletconnect/universal-provider@2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
-      '@stablelib/chacha20poly1305': 1.0.1
-      '@stablelib/hkdf': 1.0.1
-      '@stablelib/random': 1.0.2
-      '@stablelib/sha256': 1.0.1
-      '@stablelib/x25519': 1.0.3
-      '@walletconnect/relay-api': 1.0.10
-      '@walletconnect/safe-json': 1.0.2
-      '@walletconnect/time': 1.0.2
-      '@walletconnect/types': 2.14.0
-      '@walletconnect/window-getters': 1.0.1
-      '@walletconnect/window-metadata': 1.0.1
-      detect-browser: 5.3.0
-      query-string: 7.1.3
-      uint8arrays: 3.1.0
+      '@walletconnect/jsonrpc-http-connection': 1.0.8
+      '@walletconnect/jsonrpc-provider': 1.0.14
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/logger': 2.1.2
+      '@walletconnect/sign-client': 2.16.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@walletconnect/types': 2.16.1
+      '@walletconnect/utils': 2.16.1
+      events: 3.3.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -8984,8 +9083,11 @@ snapshots:
       - '@react-native-async-storage/async-storage'
       - '@upstash/redis'
       - '@vercel/kv'
+      - bufferutil
+      - encoding
       - ioredis
       - uWebSockets.js
+      - utf-8-validate
 
   '@walletconnect/utils@2.15.1':
     dependencies:
@@ -9019,6 +9121,40 @@ snapshots:
       - ioredis
       - uWebSockets.js
 
+  '@walletconnect/utils@2.16.1':
+    dependencies:
+      '@stablelib/chacha20poly1305': 1.0.1
+      '@stablelib/hkdf': 1.0.1
+      '@stablelib/random': 1.0.2
+      '@stablelib/sha256': 1.0.1
+      '@stablelib/x25519': 1.0.3
+      '@walletconnect/relay-api': 1.0.11
+      '@walletconnect/relay-auth': 1.0.4
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.16.1
+      '@walletconnect/window-getters': 1.0.1
+      '@walletconnect/window-metadata': 1.0.1
+      detect-browser: 5.3.0
+      elliptic: 6.5.7
+      query-string: 7.1.3
+      uint8arrays: 3.1.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - ioredis
+      - uWebSockets.js
+
   '@walletconnect/window-getters@1.0.1':
     dependencies:
       tslib: 1.14.1
@@ -9028,17 +9164,17 @@ snapshots:
       '@walletconnect/window-getters': 1.0.1
       tslib: 1.14.1
 
-  '@web3modal/base@5.1.3(@types/react@18.3.3)(react@18.3.1)':
+  '@web3modal/base@5.1.11(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
-      '@walletconnect/utils': 2.14.0
-      '@web3modal/common': 5.1.3
-      '@web3modal/core': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/polyfills': 5.1.3
-      '@web3modal/scaffold-ui': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/scaffold-utils': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/siwe': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/ui': 5.1.3
-      '@web3modal/wallet': 5.1.3
+      '@walletconnect/utils': 2.16.1
+      '@web3modal/common': 5.1.11
+      '@web3modal/core': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/polyfills': 5.1.11
+      '@web3modal/scaffold-ui': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/scaffold-utils': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/siwe': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/ui': 5.1.11
+      '@web3modal/wallet': 5.1.11
     optionalDependencies:
       borsh: 0.7.0
       bs58: 5.0.0
@@ -9060,32 +9196,32 @@ snapshots:
       - react
       - uWebSockets.js
 
-  '@web3modal/common@5.1.3':
+  '@web3modal/common@5.1.11':
     dependencies:
       bignumber.js: 9.1.2
       dayjs: 1.11.10
 
-  '@web3modal/core@5.1.3(@types/react@18.3.3)(react@18.3.1)':
+  '@web3modal/core@5.1.11(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
-      '@web3modal/common': 5.1.3
-      '@web3modal/wallet': 5.1.3
+      '@web3modal/common': 5.1.11
+      '@web3modal/wallet': 5.1.11
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - react
 
-  '@web3modal/polyfills@5.1.3':
+  '@web3modal/polyfills@5.1.11':
     dependencies:
       buffer: 6.0.3
 
-  '@web3modal/scaffold-ui@5.1.3(@types/react@18.3.3)(react@18.3.1)':
+  '@web3modal/scaffold-ui@5.1.11(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
-      '@web3modal/common': 5.1.3
-      '@web3modal/core': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/scaffold-utils': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/siwe': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/ui': 5.1.3
-      '@web3modal/wallet': 5.1.3
+      '@web3modal/common': 5.1.11
+      '@web3modal/core': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/scaffold-utils': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/siwe': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/ui': 5.1.11
+      '@web3modal/wallet': 5.1.11
       lit: 3.1.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -9105,25 +9241,25 @@ snapshots:
       - react
       - uWebSockets.js
 
-  '@web3modal/scaffold-utils@5.1.3(@types/react@18.3.3)(react@18.3.1)':
+  '@web3modal/scaffold-utils@5.1.11(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
-      '@web3modal/common': 5.1.3
-      '@web3modal/core': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/polyfills': 5.1.3
-      '@web3modal/wallet': 5.1.3
+      '@web3modal/common': 5.1.11
+      '@web3modal/core': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/polyfills': 5.1.11
+      '@web3modal/wallet': 5.1.11
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
     transitivePeerDependencies:
       - '@types/react'
       - react
 
-  '@web3modal/siwe@5.1.3(@types/react@18.3.3)(react@18.3.1)':
+  '@web3modal/siwe@5.1.11(@types/react@18.3.3)(react@18.3.1)':
     dependencies:
-      '@walletconnect/utils': 2.15.1
-      '@web3modal/common': 5.1.3
-      '@web3modal/core': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/scaffold-utils': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/ui': 5.1.3
-      '@web3modal/wallet': 5.1.3
+      '@walletconnect/utils': 2.16.1
+      '@web3modal/common': 5.1.11
+      '@web3modal/core': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/scaffold-utils': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/ui': 5.1.11
+      '@web3modal/wallet': 5.1.11
       lit: 3.1.0
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
     transitivePeerDependencies:
@@ -9144,23 +9280,23 @@ snapshots:
       - react
       - uWebSockets.js
 
-  '@web3modal/ui@5.1.3':
+  '@web3modal/ui@5.1.11':
     dependencies:
       lit: 3.1.0
       qrcode: 1.5.3
 
-  '@web3modal/wagmi@5.1.3(6q2sm26ejirlwrjszeqedwdfti)':
+  '@web3modal/wagmi@5.1.11(6q2sm26ejirlwrjszeqedwdfti)':
     dependencies:
       '@wagmi/connectors': 5.1.7(@types/react@18.3.3)(@wagmi/core@2.13.4(@tanstack/query-core@5.51.24)(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.4)(viem@2.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-native@0.75.2(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.5.4)(utf-8-validate@5.0.10))(react@18.3.1)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
       '@wagmi/core': 2.13.4(@tanstack/query-core@5.51.24)(@types/react@18.3.3)(react@18.3.1)(typescript@5.5.4)(viem@2.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))
-      '@walletconnect/ethereum-provider': 2.15.1(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)
-      '@walletconnect/utils': 2.15.1
-      '@web3modal/base': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/common': 5.1.3
-      '@web3modal/polyfills': 5.1.3
-      '@web3modal/scaffold-utils': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/siwe': 5.1.3(@types/react@18.3.3)(react@18.3.1)
-      '@web3modal/wallet': 5.1.3
+      '@walletconnect/ethereum-provider': 2.16.1(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)(utf-8-validate@5.0.10)
+      '@walletconnect/utils': 2.16.1
+      '@web3modal/base': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/common': 5.1.11
+      '@web3modal/polyfills': 5.1.11
+      '@web3modal/scaffold-utils': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/siwe': 5.1.11(@types/react@18.3.3)(react@18.3.1)
+      '@web3modal/wallet': 5.1.11
       viem: 2.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4)
       wagmi: 2.12.7(@tanstack/query-core@5.51.24)(@tanstack/react-query@5.51.24(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-native@0.75.2(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)(typescript@5.5.4)(utf-8-validate@5.0.10))(react@18.3.1)(typescript@5.5.4)(utf-8-validate@5.0.10)(viem@2.20.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@5.0.10)(zod@3.22.4))(zod@3.22.4)
     optionalDependencies:
@@ -9187,11 +9323,11 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  '@web3modal/wallet@5.1.3':
+  '@web3modal/wallet@5.1.11':
     dependencies:
       '@walletconnect/logger': 2.1.2
-      '@web3modal/common': 5.1.3
-      '@web3modal/polyfills': 5.1.3
+      '@web3modal/common': 5.1.11
+      '@web3modal/polyfills': 5.1.11
       zod: 3.22.4
 
   '@webassemblyjs/ast@1.12.1':
@@ -10273,7 +10409,7 @@ snapshots:
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.9.0(eslint@8.57.0)
       eslint-plugin-react: 7.35.0(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
@@ -10297,7 +10433,7 @@ snapshots:
       enhanced-resolve: 5.17.1
       eslint: 8.57.0
       eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.6
       is-core-module: 2.15.0
@@ -10319,7 +10455,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
+  eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
