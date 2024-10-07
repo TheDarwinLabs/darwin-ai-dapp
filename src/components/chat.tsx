@@ -185,7 +185,7 @@ export const Chat = () => {
     console.log("queryHash : ", queryHash);
     const data: TypedMessage<MessageTypes> = {
       domain: {
-        name: "https://localhost",
+        name: "http://localhost",
         version: "1",
         chainId: 610,
         verifyingContract: ForwarderContract,
