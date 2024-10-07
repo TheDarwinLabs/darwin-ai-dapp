@@ -475,7 +475,7 @@ export const Chat = () => {
                         <Link
                           target="_blank"
                           className="hover:underline"
-                          href={`https://explorer.darwinchain.ai/tx/${msg.txHash}`}
+                          href={`https://sepolia.etherscan.io//tx/${msg.txHash}`}
                         >
                           {shortenHash(msg.txHash)}
                         </Link>

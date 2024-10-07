@@ -9,32 +9,34 @@ export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 if (!projectId) throw new Error("Project ID is not defined");
 
 export const metadata = {
-  name: "Darwin",
+  name: "Sepolia",
   description: "Darwin AI",
   url: "https://web3modal.com", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
 const DarwinDevnet: Chain = {
-  id: 610,
-  name: "Darwin Devnet",
+  id: 11155111,
+  name: "Sepolia",
   nativeCurrency: {
-    name: "DNA",
-    symbol: "DNA",
+    name: "ETH",
+    symbol: "ETH",
     decimals: 18,
   },
   rpcUrls: {
     default: {
-      http: ["https://devnet-rpc.darwinchain.ai"],
-      webSocket: ["wss://devnet-rpc.darwinchain.ai"],
+      http: ["https://rpc.sepolia.org"],
+      webSocket: ["wss://rpc.sepolia.org"],
+      
     },
   },
   blockExplorers: {
-    default: { name: "Explorer", url: "https://explorer.darwinchain.ai" },
+    default: { name: "Explorer", url: "https://sepolia.etherscan.io" },
+    
   },
 };
 // Create wagmiConfig
-const chains = [DarwinDevnet] as const;
+const chains = [sepolia] as const;
 
 export const config = defaultWagmiConfig({
   chains,
