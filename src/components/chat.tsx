@@ -187,7 +187,7 @@ export const Chat = () => {
       domain: {
         name: "http://localhost",
         version: "1",
-        chainId: 610,
+        chainId: 11155111,
         verifyingContract: ForwarderContract,
       },
       primaryType: "ForwardRequest",
